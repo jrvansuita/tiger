@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-packager . Tiger"
+    "win32": "electron-packager . --platform=win32 --arch=x64 --icon='./assets/icons/icon.png' --out=../ElectronBuilds --overwrite",
+    "mac": "electron-packager . --platform=darwin --arch=x64 --icon='./assets/icons/icon.icns' --out=../ElectronBuilds --overwrite"
   },
   "keywords": [
     "Electron",
@@ -13,24 +14,26 @@
   ],
   "author": "Jr Vansuita",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "electron": "~1.7.8",
-    "electron-packager": "^10.1.0"
-  },
+
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:boutiqueinfantil/tiger.git"
   },
-  "dependencies": {
+
+   "dependencies": {
     "emojionearea": "^3.2.6",
     "fb": "^2.0.0",
     "jquery": "^3.2.1",
-    "jquery-lazy": "^1.7.6",
     "nedb": "^1.8.0",
     "semantic-ui": "^2.2.13",
     "semantic-ui-calendar": "0.0.8",
     "short-url": "0.0.1",
     "sortablejs": "^1.7.0",
     "tinycolor2": "^1.4.1"
+  },
+
+  "devDependencies": {
+    "electron": "~1.7.8",
+    "electron-packager": "^10.1.0"
   }
 }

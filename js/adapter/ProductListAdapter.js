@@ -1,55 +1,56 @@
 const productsProvider = require(_jsdir + 'provider/ProductsProvider.js');
 const util = require(_jsdir + 'util/utils.js');
 const cnt = require(_jsdir + 'res/cnt.js');
-var tinycolor = require("tinycolor2");
+var tinycolor = require('tinycolor2');
 var Keep = require(_jsdir + 'prefs/Keep.js');
 
 module.exports = {
-  init: function(){
+  init: function() {
     productsProvider.init();
     recoverSelectedAttrs();
   },
 
-  hasSearchAttrs : function(){
+  hasSearchAttrs: function() {
     return productsProvider.hasAttrs();
   },
 
-  selectAll(check){
-    for(var i = 0; i < list.length; i++){
-      if(i < loadedIndexes){
+  selectAll(check) {
+    for (var i = 0; i < list.length; i++) {
+      if (i < loadedIndexes) {
         toggleChecked(i, check);
       }
     }
   },
 
-  toggleAll(){
-    for(var i = 0; i < list.length; i++){
-      if(i < loadedIndexes){
+  toggleAll() {
+    for (var i = 0; i < list.length; i++) {
+      if (i < loadedIndexes) {
         toggleChecked(i);
       }
     }
   },
 
   execute: function(searchText, onFinished) {
-    productsProvider.setSearchCallBack(function(data){
+    productsProvider.setSearchCallBack(function(data) {
       onFinishedSearch(data);
       onFinished();
     });
+
     productsProvider.search(searchText);
   },
 
-  saveSelecteds(){
+  saveSelecteds() {
     var skus = [];
-    var el = $('.checked');
+    var $el = $('.checked');
 
-    for(var i = 0; i < el.length; i++){
+    for (var i = 0; i < el.length; i++) {
       skus.push($(el[i]).attr('sku'));
     }
 
     Keep.selectedProducts(skus);
 
     return skus.length > 0;
-  }
+  },
 
 };
 
@@ -63,11 +64,11 @@ function onFinishedSearch(data) {
   $('.list-group-item').remove();
   loadedIndexes = 0;
 
-  var feedPane = $('#pane-content');
-  var feedList = $('#feed-list');
+  var $pane = $('#pane-content');
+  var $list = $('#feed-list');
 
-  feedPane.unbind('scroll').bind('scroll', function(){
-    if ((feedPane.scrollTop() + feedPane.height()) + 1000 >= feedList.height()) {
+  $pane.unbind('scroll').bind('scroll', function() {
+    if (($pane.scrollTop() + $pane.height()) + 1000 >= $list.height()) {
       loadMore();
     }
   });
@@ -75,12 +76,12 @@ function onFinishedSearch(data) {
   loadMore();
 }
 
-function loadMore(){
-  if (loadedIndexes < list.length){
+function loadMore() {
+  if (loadedIndexes < list.length) {
     var max = loadedIndexes + threshold;
     max = max > list.length ? list.length : max;
 
-    for (var i = loadedIndexes; i < max; i++){
+    for (var i = loadedIndexes; i < max; i++) {
       appendItem(i, list[i]);
     }
 
@@ -90,84 +91,86 @@ function loadMore(){
 
 /* Internal Functions */
 
-function  appendItem(index, item){
+function appendItem(index, item) {
   var left = createLeft(index, item);
   var main = createMain(item);
   var right = createRight(item);
 
-  var li = $('<li>').append(left, main , right)
-  .attr('id', 'item-' + index)
-  .attr('sku', item.sku)
-  .addClass('list-group-item');
+  var li = $('<li>').append(left, main, right)
+    .attr('id', 'item-' + index)
+    .attr('sku', item.sku)
+    .addClass('list-group-item');
 
   $('#feed-list').append(li);
 }
 
-function createLeft(index, item){
+function createLeft(index, item) {
   var checkBoxId = 'check-' + index;
 
-  var checked = $('<input>', {type:"checkbox"}).attr('id', checkBoxId).css('display', 'none');
-  var img = $('<img>').attr("src", item.imageUrl).addClass('thumb');
+  var checked = $('<input>', {
+    type: 'checkbox',
+  }).attr('id', checkBoxId).css('display', 'none');
+  var img = $('<img>').attr('src', item.imageUrl).addClass('thumb');
 
   var label = $('<label>').attr('for', checkBoxId).append(img);
 
-  return $('<div>').append(checked,label)
-  .addClass('media-object pull-left')
-  .click({index: index}, function (event) {
-    toggleChecked(event.data.index);
-    return false;
-  });
+  return $('<div>').append(checked, label)
+    .addClass('media-object pull-left')
+    .click({
+      index: index,
+    }, function(event) {
+      toggleChecked(event.data.index);
+      return false;
+    });
 }
 
-function createMain(item){
+function createMain(item) {
   var title = createTitle(item);
   var description = createDescription(item);
   var media = $('<div>').addClass('media-body ').append(title, description);
   return media;
 }
 
-function createRight(item){
+function createRight(item) {
   var firstRow = $('<p>').addClass('label-row')
-  .append(createLabel(item.brand,item.brand, 'brand'),
-  createLabel(item.color, item.color, 'color'));
-
+    .append(createLabel(item.brand, item.brand, 'brand'),
+      createLabel(item.color, item.color, 'color'));
 
   var secondRow = $('<p>').addClass('label-row')
-  .append(createLabel(item.price, util.money(item.price), 'price'),
-  createLabel(item.quantity, util.und(item.quantity), 'quantity'));
-
+    .append(createLabel(item.price, util.money(item.price), 'price'),
+      createLabel(item.quantity, util.und(item.quantity), 'quantity'));
 
   var thirdRow = $('<p>').addClass('label-row')
-  .append(createLabel(item.gender, item.gender, 'gender'),
-  createLabel(item.category, item.category, 'category'));
+    .append(createLabel(item.gender, item.gender, 'gender'),
+      createLabel(item.category, item.category, 'category'));
 
   var media = $('<div>').addClass('media-body left-divider right-body')
-  .append(firstRow, secondRow, thirdRow);
+    .append(firstRow, secondRow, thirdRow);
 
   return media;
 }
 
 function createLabel(value, text, field, removeSelf) {
-  var backgroundColor = field === 'color' ? util. strColorToColor(text) : util.strToColor(text);
-  var fontColor = tinycolor(backgroundColor).getBrightness() > 200 ? '#403e3e' : 'white';
+  var bgColor = field == 'color' ? util.colorVal(text) : util.strToColor(text);
+  var fontColor = tinycolor(bgColor).getBrightness() > 200 ? '#403e3e' : '#f';
 
-  var label =  $('<strong>').text(text)
-  .addClass('label')
-  .attr('field', field)
-  .attr('value', value)
-  .css('background-color', backgroundColor)
-  .css('color', fontColor);
+  var label = $('<strong>').text(text)
+    .addClass('label')
+    .attr('field', field)
+    .attr('value', value)
+    .css('background-color', bgColor)
+    .css('color', fontColor);
 
-  if (removeSelf){
-    label.click(function(){
+  if (removeSelf) {
+    label.click(function() {
       $(this).remove();
       productsProvider.searchAttr(field, value);
     });
-  }else{
-    label.click(function(){
+  } else {
+    label.click(function() {
       var field = $(this).attr('field');
 
-      if ($("div#label-box > strong[field=" + field + "]").length == 0){
+      if ($('div#label-box > strong[field=' + field + ']').length == 0) {
         var value = $(this).attr('value');
         value = util.isNumbers(value) ? parseInt(value) : value;
         productsProvider.searchAttr(field, value);
@@ -177,44 +180,46 @@ function createLabel(value, text, field, removeSelf) {
     });
   }
 
-
   return label;
 }
 
-function createTitle(item){
-  var title = $('<strong>').addClass('title').html(createLink(' ' + item.title, item.url).prop('outerHTML'));
+function createTitle(item) {
+  var $title = $('<strong>').addClass('title')
+    .html(createLink(' ' + item.title, item.url)
+      .prop('outerHTML'));
+
   var sku = $('<strong>').text(item.sku).addClass('label');
 
-  var div = $('<div>').css('line-height', '30px').append(sku, title);
+  var div = $('<div>').css('line-height', '30px').append(sku, $title);
 
   return div;
 }
 
-function createDescription(item){
+function createDescription(item) {
   return $('<p>').addClass('description-body').text(item.description);
 }
 
 function toggleChecked(index, check) {
-  var item = $('#item-' + index);
-  var glyph = $('#check-' + index);
+  var $item = $('#item-' + index);
+  var $glyph = $('#check-' + index);
 
-  if (check === undefined){
-    item.toggleClass('checked');
-    glyph.attr("checked", !glyph.attr("checked"));
-  }else{
-    item.toggleClass('checked', check);
-    glyph.attr("checked", check);
+  if (check === undefined) {
+    $item.toggleClass('checked');
+    $glyph.attr('checked', !$glyph.attr('checked'));
+  } else {
+    $item.toggleClass('checked', check);
+    $glyph.attr('checked', check);
   }
 }
 
-function createLink(label, url){
+function createLink(label, url) {
   return $('<a>').addClass('open-in-browser').attr('href', url).html(label);
 }
 
-function recoverSelectedAttrs(){
+function recoverSelectedAttrs() {
   var attrs = Keep.searchAttrs();
 
-  Object.keys(attrs).forEach(function(key,index) {
+  Object.keys(attrs).forEach(function(key, index) {
     var value = attrs[key];
     $('#label-box').append(createLabel(value, value, key, true));
   });

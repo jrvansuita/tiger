@@ -1,26 +1,26 @@
 var cnt = require(_jsdir + 'res/cnt.js');
 var colors = require(_jsdir + 'res/colors.js');
 
-module.exports =  {
-  rand : function(max, min) {
+module.exports = {
+  rand: function(max, min) {
     min = min ? min : 0;
-    return Math.floor((Math.random() * (max-min)) + min);
+    return Math.floor((Math.random() * (max - min)) + min);
   },
 
-  randFloat : function(max, min) {
+  randFloat: function(max, min) {
     return (Math.random() * (max - min) + min).toFixed(4);
   },
 
 
-  money : function (val) {
+  money: function(val) {
     return 'R$ ' + parseFloat(val).toFixed(2).toString().replace('.', ',');
   },
 
-  und : function (val) {
+  und: function(val) {
     return val + ' und.';
   },
 
-  upLetters : function (val) {
+  upLetters: function(val) {
     return val.toLowerCase().replace(/(^| )(\w)/g, s => s.toUpperCase());
   },
 
@@ -32,21 +32,21 @@ module.exports =  {
     return hash;
   },
 
-  strToColor: function(str){
+  strToColor: function(str) {
     var shortened = this.hashCode(str) % 160;
-    return "hsl(" + shortened + ", 45%, 60%)";
+    return 'hsl(' + shortened + ', 45%, 60%)';
   },
 
-  strColorToColor : function(str){
-    return '#'+ colors[str.replace(' ', '').toLowerCase()];
+  colorVal: function(str) {
+    return '#' + colors[str.replace(' ', '').toLowerCase()];
   },
 
-  isNumbers(s){
+  isNumbers(s) {
     return s.match(/^[0-9]+$/) != null;
   },
 
-  format(str, fmt){
-    for (var i=0; i<fmt.length; i++){
+  format(str, fmt) {
+    for (var i = 0; i < fmt.length; i++) {
       str = str.replace('[?]', fmt[i]);
     }
 
@@ -59,80 +59,86 @@ module.exports =  {
     var dayOffWeek = cnt.days[date.getDay()];
     var year = date.getFullYear();
     var hours = date.getHours();
-    var minutes = ("0" + date.getMinutes()).slice(-2);
+    var minutes = ('0' + date.getMinutes()).slice(-2);
 
 
-    return  dayOffWeek + ', ' + date.getUTCDate() + ' de ' + month + ' de ' + year + ' às ' + hours + ':' + minutes;
+    return dayOffWeek + ', ' + date.getUTCDate() + ' de ' + month +
+      ' de ' + year + ' às ' + hours + ':' + minutes;
   },
 
-  removeProtocol(s){
+  removeProtocol(s) {
     return s.replace(/(^\w+:|^)\/\//, '');
   },
 
-  buildTrackableUrl(url, source, medium, name){
-    if(source){
+  buildTrackableUrl(url, source, medium, name) {
+    if (source) {
       url += '#utm_source=' + source;
     }
 
-    if(medium){
+    if (medium) {
       url += '#utm_medium=' + medium;
     }
 
-    if(name){
+    if (name) {
       url += '#utm_campaign=' + name;
     }
 
     return url;
   },
 
-  calcGalleryImageSize(maxWidth, itemsLength){
+  calcGalleryImageSize(maxWidth, itemsLength) {
     var overplus = 4;
     var width = maxWidth - overplus;
 
-    if (itemsLength <= 4){
+    if (itemsLength <= 4) {
       width = width / ((itemsLength % 2) == 0 ? 2 : itemsLength);
-    }else{
-      width = width/4;
+    } else {
+      width = width / 4;
     }
 
     return width - overplus;
   },
 
-  randomDate : function(start, end) {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  randomDate: function(start, end) {
+    return new Date(start.getTime() + Math.random() *
+      (end.getTime() - start.getTime()));
   },
 
-  gender(s){
-    if (s == 'Male'){
+  gender(s) {
+    if (s == 'Male') {
       return 'meninos';
-    }else if (s == 'Female'){
-      return 'meninas';
-    }else if (s == 'Unisex'){
-      return 'ambos';
-    }else{
-      return '';
     }
+
+    if (s == 'Female') {
+      return 'meninas';
+    }
+
+    if (s == 'Unisex') {
+      return 'ambos';
+    }
+
+    return '';
   },
 
-  removerAcentos : function( newStringComAcento ) {
+  removerAcentos: function(newStringComAcento) {
     var string = newStringComAcento;
-    var mapaAcentosHex 	= {
-      a : /[\xE0-\xE6]/g,
-      e : /[\xE8-\xEB]/g,
-      i : /[\xEC-\xEF]/g,
-      o : /[\xF2-\xF6]/g,
-      u : /[\xF9-\xFC]/g,
-      c : /\xE7/g,
-      n : /\xF1/g
+    var mapaAcentosHex = {
+      a: /[\xE0-\xE6]/g,
+      e: /[\xE8-\xEB]/g,
+      i: /[\xEC-\xEF]/g,
+      o: /[\xF2-\xF6]/g,
+      u: /[\xF9-\xFC]/g,
+      c: /\xE7/g,
+      n: /\xF1/g,
     };
 
-    for ( var letra in mapaAcentosHex ) {
+    for (var letra in mapaAcentosHex) {
       var expressaoRegular = mapaAcentosHex[letra];
-      string = string.replace( expressaoRegular, letra );
+      string = string.replace(expressaoRegular, letra);
     }
 
     return string;
-  }
+  },
 
 
 };
