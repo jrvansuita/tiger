@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <style>@import url('./css/choose.css');</style>
+
+
+  <script>
+  $.getScript('./js/control/choose-control.js');
+  </script>
+
+</head>
+<body>
+
+  <div class="fixed-header">
+
+    <div class="ui icon buttons">
+      <button class="ui button" id="select-all">
+        <i class="checkmark icon"></i>
+      </button>
+      <button class="ui button" id="toggle-all">
+        <i class="random icon"></i>
+      </button>
+    </div>
+
+
+    <button class="ui icon button" id="publish">
+      <i class="external share icon"></i>
+    </button>
+
+
+    <div class="ui action input" >
+      <input type="text" placeholder="Search..." id="search">
+      <button class="ui icon button" id="search-button">
+        <i class="search icon"></i>
+      </button>
+    </div>
+
+
+    <div id="label-box">
+
+    </div>
+  </div>
+
+  <ul class="list-group" id="feed-list">
+
+
+  </ul>
+
+</body>
+</html>

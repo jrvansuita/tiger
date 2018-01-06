@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tiger</title>
+
+
+  <!-- Jquery -->
+  <script>
+  window.$ = window.jQuery = require('jquery');
+  </script>
+
+  <!-- Photon Style -->
+  <link rel="stylesheet" href="./photon/css/photon.css">
+  <!-- Default Style -->
+  <link rel="stylesheet" href="./css/default.css">
+
+
+  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="semantic/dist/components/icon.min.css">
+  <script src="semantic/dist/semantic.min.js"></script>
+
+  <script src="./js/control/index-control.js"></script>
+  <script src="./js/control/menu-control.js"></script>
+</head>
+<body>
+  <div class="window">
+
+    <div class="window-content">
+      <div class="pane-group">
+
+        <div class="sidebar">
+
+          <div class="ui compact vertical labeled icon menu">
+            <a class="nav-group-item item" id="choose-product-menu-item" page="choose.html">
+              <i class="list icon"></i>
+              Product List
+            </a>
+            <a class="nav-group-item item" id="publish-menu-item" page="publish.html">
+              <i class="puzzle icon"></i>
+              Create a Post
+            </a>
+            <a class="nav-group-item item" id="ebit-menu-item" page="ebit.html">
+              <i class="rocket icon"></i>
+              E-bit
+            </a>
+            <a class="nav-group-item item" id="settings-menu-item" page="settings.html">
+              <i class="setting icon"></i>
+              Settings
+            </a>
+          </div>
+        </div>
+
+        <div class="pane" id="pane-content" >
+        </div>
+      </div>
+    </div>
+
+    <footer class="toolbar toolbar-footer">
+      <div id="message-holder" style="display:none">
+        <div class="ui active inline loader pull-right" id="loader-message"></div>
+        <i class="icon pull-right" id="icon-message"></i>
+        <h1 class="title pull-right" id="hint-message"></h1>
+      </div>
+    </footer>
+  </div>
+
+  <script type="text/javascript">
+  require('./renderer.js')
+  bindMenu();
+  </script>
+</body>
+</html>

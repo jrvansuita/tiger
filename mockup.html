@@ -1,0 +1,231 @@
+<html>
+<style>
+.section-page, .widget{
+  /* Remove some unnecessary elements */
+  display:none;
+}
+</style>
+
+<!-- Render the image on page -->
+<canvas id="canvas"></canvas>
+
+<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://rawgit.com/bgrins/TinyColor/master/tinycolor.js"></script>
+
+
+<!-- Defining global variables -->
+<script type="text/javascript">
+var price;
+var priceX;
+var productUrl;
+var productImgUrl;
+var discount;
+var fontColor;
+
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var mockupImage = new Image();
+var productImage = new Image();
+
+//https://fonts.google.com/
+//'Droid Sans', 'Droid Serif', 'Open Sans', 'Lato'
+var currentFont; // = 'Varela Round';
+
+/** Defining functions **/
+
+// Capture the request query values from url
+function getParamByName(name) {
+  var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+//Parse float string into money format
+function money(v) {
+  return 'R$ ' + parseFloat(v).toFixed(2).replace('.',',');
+}
+
+function initQueryVariables(){
+  //Get the product price by querest query
+  price = money(getParamByName('price'));
+
+  //Get the product installment by querest query
+  priceX = getParamByName('priceX');
+  if (priceX){
+    priceX = getParamByName('priceX').split('x');
+    priceX = (priceX[0] == '1') ? 'Apenas' : priceX[0] + 'x de ' + money(priceX[1]) + ' ou';
+  }
+
+  //Get the product image url by querest query
+  productImgUrl = getParamByName('productImgUrl');
+  //Get the product url by querest query
+  productUrl = getParamByName('productUrl');
+
+  //Get the discount by request query
+  discount = getParamByName('discount');
+
+  //Get the font type by request query
+  currentFont = getParamByName('font');
+  currentFont = currentFont ? currentFont : 'Varela Round';
+
+  //Get the font color by request query
+  fontColor = getParamByName('fontColor');
+  fontColor = fontColor ? '#' + fontColor : '';
+}
+
+//Filling canvas with white background
+function fillCanvasWhiteBackground(){
+  context.fillStyle = 'white';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+//Centering the product image at the mockup
+function centeringProductImage(){
+  //Define a negative top margin for product image
+  var negativeTopMargin = 80;
+  context.drawImage(productImage, canvas.width / 2 - productImage.width / 2, (canvas.height / 2 - productImage.height / 2) - negativeTopMargin);
+  context.drawImage(mockupImage, 0, 0);
+}
+
+//Placing the product Price and Installments
+function createPriceAndInstallmentsElements(){
+  var leftPriceMargin = 30;
+
+  /* Placing the product Price */
+  context.font = "bold 50pt " + currentFont;
+  context.fillStyle = getFontColor();
+  var bottomPriceMargin = 30;
+  context.fillText(price, leftPriceMargin, canvas.height-bottomPriceMargin);
+
+  //Placing the product Price
+  if (priceX){
+    context.font = "bold 20pt " + currentFont;
+    context.fillStyle = getFontColor();
+    var bottomPriceMargin = 95;
+    context.fillText(priceX, leftPriceMargin + 5, canvas.height-bottomPriceMargin);
+  }
+}
+
+function createDiscountLabel(){
+  if (discount){
+    renderDiscount(discount);
+  }else{
+    //There is a sync request
+    jQuery.ajax({
+      url: productUrl,
+      async : false,
+      success: function(html) {
+        var pattern = 'promotion_percent_label"><i>';
+        var pos = html.indexOf(pattern) + pattern.length;
+        var discount = html.substring(pos, pos+2).replace(/[^0-9]/g,'');
+
+        if (discount){
+          renderDiscount(discount);
+        }
+      }
+    });
+  }
+}
+
+function renderDiscount(discount){
+  if (discount){
+    discount = '-' + discount + '%';
+    var rightMargin = 100;
+    var topMargin = 100;
+
+    context.beginPath();
+    context.arc(canvas.width-rightMargin, topMargin, 65, 0, 2 * Math.PI, false);
+    context.fillStyle = getBarBackgroundColor();
+    context.fill();
+
+    rightMargin += 58;
+    context.font = "bold 35pt " + currentFont;
+    context.fillStyle = getFontColor();
+    context.fillText(discount, canvas.width-rightMargin, topMargin + 13);
+  }
+}
+
+var backgroundColor;
+
+function getBarBackgroundColor(){
+  if (!backgroundColor){
+    var p = context.getImageData(canvas.width -5, canvas.height-5, 1, 1).data;
+    var s = ((p[0] << 16) | (p[1] << 8) | p[2]).toString(16);
+    backgroundColor = "#" + ("000000" + s).slice(-6);
+  }
+
+  return backgroundColor;
+}
+
+function getFontColor() {
+  if (!fontColor){
+    var c = tinycolor(getBarBackgroundColor());
+    fontColor = c.getBrightness() > 200 ? 'black' : 'white';
+  }
+
+  return fontColor;
+}
+
+//Dinamic download the jpeg
+function downloadTheImage(){
+  if (window.location.href.indexOf('file://') == -1){
+    //Creating an image url to download
+    var imgUrl = canvas.toDataURL({
+      format: 'jpeg',
+      quality: 0.8
+    });
+
+    var a = document.createElement('a');
+    a.setAttribute("download", "mocukedUp.jpeg");
+    a.setAttribute("href", imgUrl);
+    a.click();
+  }
+}
+
+
+/** Main **/
+
+
+function mainThread(){
+  //initQueryVariables();
+
+  //Allow cors
+  mockupImage.crossOrigin="anonymous";
+  productImage.crossOrigin="anonymous";
+
+  //On mockup load
+  mockupImage.onload = function() {
+    canvas.width = mockupImage.width;
+    canvas.height = mockupImage.height;
+    productImage.src = productImgUrl;
+  };
+
+  //On product image load
+  productImage.onload = function() {
+    fillCanvasWhiteBackground();
+    centeringProductImage();
+    createPriceAndInstallmentsElements();
+    createDiscountLabel();
+    downloadTheImage();
+  };
+
+  mockupImage.src ='https://www.boutiqueinfantil.com.br/media/wysiwyg/images/mockup_facebook.png';
+}
+
+//Create a new Thread
+setTimeout(function(){
+  initQueryVariables();
+
+  //Load fonts first
+  WebFont.load({
+    google: {
+      families: ['Droid Sans', currentFont]
+    },
+    active: function() {
+      //Run main thread
+      mainThread();
+    },
+  });
+}, 0);
+</script>
+</html>
