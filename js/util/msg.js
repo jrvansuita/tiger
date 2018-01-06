@@ -41,9 +41,9 @@ function show(msg, iconClass, color, showLoader, dismiss) {
   $('#loader-message').toggle(showLoader ? true: false);
 
   if (dismiss || (dismiss === undefined)){
-    $('#message-holder').stop().fadeIn(0).delay(5000).fadeOut('slow');
+    $('#message-holder').stop(true).fadeIn(0).delay(5000).fadeOut('slow');
   }else{
-    $('#message-holder').stop().show();
+    $('#message-holder').stop(true).animate({opacity:'100'}).show();
   }
 
 

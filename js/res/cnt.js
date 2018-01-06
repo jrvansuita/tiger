@@ -1,6 +1,7 @@
 module.exports={
   loading : 'Loading...',
   finished : 'Finished',
+  completed : 'Completed',
   allProductsUpdated : 'All products updated.',
   published : 'Published',
   scheduled : 'Scheduled',

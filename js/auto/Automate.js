@@ -40,14 +40,19 @@ function checkMenu(callback){
 }
 
 function run(){
+
   checkMenu(function(){
     if (isSearching()){
+      msg.clear();
+
       prepareList();
 
       if (gotProducts()){
         publishClick(function (){
           run();
         });
+      }else{
+        msg.sucess(cnt.completed);
       }
     }
   });
@@ -79,14 +84,20 @@ function gotProducts(){
   for (var i = 0; i < postLength; i++){
     var id = '#check-' + (lastPosition + i);
 
-    $(id).parent().delay(200).click();
+    $(id).parent().click();
 
     $('#pane-content').scrollTop(120 * lastPosition);
   }
 
   lastPosition+= postLength;
 
-  return $('input:checkbox:checked').length > 1;
+  var selected = $('input:checkbox:checked').length > 1;
+
+  if (!selected){
+    $('input:checkbox:checked').click();
+  }
+
+  return selected;
 }
 
 function publishClick(sucess){
@@ -117,10 +128,8 @@ function preparePost(sucess){
       }
 
       sleep(1000).then(() => {
-        msg.clear();
-        msg.sucess('postou');
         $('#post-boutique').click();
-        sleep(5000).then(() => {
+        sleep(8000).then(() => {
           sucess();
         });
       });
