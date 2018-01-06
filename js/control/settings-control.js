@@ -22,9 +22,11 @@ $(document).ready(function(){
 function storeKeepValues(){
   Keep.facebookToken(FacebookPage.test().pageId, $('#t-token').val());
   Keep.facebookToken(FacebookPage.boutique().pageId, $('#bi-token').val());
+  Keep.minimumStock($('#minimum-stock').val());
 }
 
 function restoreKeepValues(){
   $('#t-token').val(Keep.facebookToken(FacebookPage.test().pageId));
   $('#bi-token').val(Keep.facebookToken(FacebookPage.boutique().pageId));
+  $('#minimum-stock').val(Keep.minimumStock());
 }

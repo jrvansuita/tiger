@@ -14,6 +14,9 @@ a, img{
   position: relative;
   display: -webkit-box;
 }
+.btn-group{
+  margin-left: 10px;
+}
 
 .img-circle{
   border: 1px solid #d5d3d5 !important;

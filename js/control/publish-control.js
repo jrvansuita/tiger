@@ -3,7 +3,6 @@
 
 var provider = require(_jsdir + 'provider/ProductsProvider.js');
 var Facebook =  require(_jsdir + 'fb/facebook.js');
-var Util = require(_jsdir + 'util/utils.js');
 var Insta = require(_jsdir + 'insta/InstagramProfile.js');
 var adapter = require(_jsdir + 'adapter/PublishPostAdapter.js');
 var short = require(_jsdir + 'util/short-url.js');
@@ -112,15 +111,26 @@ function buildTriggers(){
   $('#lab-link').click(function(){
     applyMagicLink();
   });
+
+  $('#future-date').click(function(){
+    $(this).toggleClass('active');
+    adapter.setFutureDate();
+  });
 }
 
 function applyMagicLink(callback){
   $('#lab-link').addClass('active');
 
-  adapter.labLink(function (newLink){
+  adapter.labLink(function (newLink, brand){
     $('#url').val(newLink);
+
+    if (brand){
+      $('#name').val(brand.toLowerCase() );
+    }
+
     onBuyLinkChanged();
     onDoShortLink(false);
+
 
     if (callback != undefined){
       callback();
@@ -165,8 +175,8 @@ function storeKeepValues(){
   Keep.campaignName($('#name').val());
   Keep.shortBuyUrl($('#short-url').hasClass('active'));
   Keep.checkIn($('#check-in').hasClass('active'));
-
   Keep.magicLink($('#lab-link').hasClass('active'));
+  Keep.futureDate($('#future-date').hasClass('active'));
 }
 
 function restoreKeepValues(){
@@ -191,5 +201,9 @@ function restoreKeepValues(){
 
   if (Keep.checkIn()){
     $('#check-in').click();
+  }
+
+  if (Keep.futureDate()){
+    $('#future-date').click();
   }
 }

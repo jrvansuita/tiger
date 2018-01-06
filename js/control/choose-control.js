@@ -37,11 +37,16 @@ $(document).ready(function(){
     require(_jsdir + 'control/menu-control.js').showPublish();
   });
 
+  $('#auto').click(function(){
+    require(_jsdir + 'auto/Automate.js').autoPost();
+  });
+
+
   function executeSearch() {
     $('#search-button').addClass('loading');
     listAdapter.execute($('#search').val(), function (){
       $('#search-button').removeClass('loading');
-      restoreAttrs(listAdapter.hasSearchAttrs());
+      //restoreAttrs(listAdapter.hasSearchAttrs());
     });
   }
 
@@ -58,12 +63,12 @@ function restoreKeepValues(){
   $('#search').val(Keep.lastProductSearch());
 }
 
-function restoreAttrs(hasAttrs){
-  if (!hasAttrs){
-    var arr = Keep.lastAttrsSearch();
-    arr.forEach(function (item){
-      var arr = item.split('-');
-      $('strong[field="' + arr[0] + '"][value="' + arr[1] + '"]').first().click();
-    });
-  }
-}
+// function restoreAttrs(hasAttrs){
+//   if (!hasAttrs){
+//     var arr = Keep.lastAttrsSearch();
+//     arr.forEach(function (item){
+//       var arr = item.split('-');
+//       $('strong[field="' + arr[0] + '"][value="' + arr[1] + '"]').first().click();
+//     });
+//   }
+// }

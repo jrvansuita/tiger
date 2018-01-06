@@ -4,7 +4,7 @@ module.exports = {
 //https://console.developers.google.com/apis/credentials?project=tiger-186923
 
   get : function (longUrl, callback) {
-    var googleSecret = 'AIzaSyBrQd0vQ3_oZb3eTTm8g2jR_pRRf_MtI4E';
+    var googleSecret = 'AIzaSyAxiQAeEckzlpR-nciHvFQLiiLeOWyUo7Y';
     var googleUrl = 'https://www.googleapis.com/urlshortener/v1/url?key=';
 
     $.ajax({

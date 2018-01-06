@@ -3,6 +3,7 @@ module.exports={
   finished : 'Finished',
   allProductsUpdated : 'All products updated.',
   postPublished : 'Post published ',
+  emptySearch : 'Not possible with empty search. ',
 
   months : [
     "janeiro", "fevereiro", "março",

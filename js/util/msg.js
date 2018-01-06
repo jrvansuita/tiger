@@ -23,6 +23,10 @@ module.exports = {
 
   error : function(msg){
     show(msg, 'circle', '#fc605b');
+  },
+
+  show : function(msg){
+    show(msg);
   }
 };
 

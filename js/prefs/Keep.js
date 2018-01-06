@@ -44,6 +44,9 @@ module.exports = {
     return _keepStr('magic-link', value) == 'true';
   },
 
+  futureDate : function(value){
+    return _keepStr('future-date', value) == 'true';
+  },
 
   buyUrl : function(value){
     return _keepStr('buy-url', value);
@@ -77,30 +80,35 @@ module.exports = {
     return _keepStr('last-product-search', value);
   },
 
-  lastAttrsSearch : function(values){
-    return _keepArr('last-attrs-search', values);
-  },
-
-  addLastAttrsSearch : function(field, value){
-    var arr = this.lastAttrsSearch();
-    var attr = field + '-'  + value;
-
-    if (arr.indexOf(attr) == -1){
-      arr.push(attr);
-    }
-
-    this.lastAttrsSearch(arr);
-  },
-
-  removeLastAttrsSearch : function(field, value){
-    var arr = this.lastAttrsSearch();
-    var attr = field + '-'  + value;
-
-    var index = arr.indexOf(attr);
-    if (index > -1){
-      arr.splice(index, 1);
-    }
-
-    this.lastAttrsSearch(arr);
+  minimumStock : function(value){
+    return _keepStr('minimum-stock', value, 0);
   }
+
+  
+  // lastAttrsSearch : function(values){
+  //   return _keepArr('last-attrs-search', values);
+  // },
+  //
+  // addLastAttrsSearch : function(field, value){
+  //   var arr = this.lastAttrsSearch();
+  //   var attr = field + '-'  + value;
+  //
+  //   if (arr.indexOf(attr) == -1){
+  //     arr.push(attr);
+  //   }
+  //
+  //   this.lastAttrsSearch(arr);
+  // },
+  //
+  // removeLastAttrsSearch : function(field, value){
+  //   var arr = this.lastAttrsSearch();
+  //   var attr = field + '-'  + value;
+  //
+  //   var index = arr.indexOf(attr);
+  //   if (index > -1){
+  //     arr.splice(index, 1);
+  //   }
+  //
+  //   this.lastAttrsSearch(arr);
+  // }
 };

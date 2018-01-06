@@ -166,14 +166,14 @@ function createLabel(value, text , field){
     if ($("div#label-box > strong[field=" + field + "]").length == 0){
       var value = $(this).attr('value');
       value = util.isNumbers(value) ? parseInt(value) : value;
-      Keep.addLastAttrsSearch(field, value);
+      //Keep.addLastAttrsSearch(field, value);
 
       productsProvider.searchAttr(field, value);
 
       var dismissableLabel = createInnerLabel(value, text, field);
       dismissableLabel.click(function(){
         $(this).remove();
-        Keep.removeLastAttrsSearch(field, value);
+        //Keep.removeLastAttrsSearch(field, value);
         productsProvider.searchAttr(field, value);
       });
 

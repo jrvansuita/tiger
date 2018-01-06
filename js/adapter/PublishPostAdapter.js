@@ -6,7 +6,7 @@ const Consts = require(_jsdir + 'res/consts.js');
 const RandomDesc = require(_jsdir + 'bean/RandomDesc.js');
 var Emoji = require(_jsdir + 'less/emoji.js');
 var MagicLink = require(_jsdir + 'less/magic-link.js');
-const msg = require(_jsdir + 'util/msg.js');
+const db = require(_jsdir + 'db/DataBase.js');
 
 var post;
 var selected = 0;
@@ -159,95 +159,120 @@ module.exports = {
       setNewShortBuyLink(null);
     }
   },
-};
 
-function setNewShortBuyLink(newBuyLink) {
-  if (same.link){
-    getItems().forEach(function(item, index){
-      item.setShortBuyLink(newBuyLink);
-    });
-  }else{
-    getSelected().setShortBuyLink(newBuyLink);
+
+  setFutureDate: function(){
+    //Busca o ultimo post realizado.
+    //db.posts().findOne({"items.product.category": getItems()[0].product.category}).sort({ scheduled_publish_time: -1 }).exec(
+      //function (err, doc) {
+        //if (doc){
+          //applyFutureDate(doc);
+        //}else{
+          db.posts().findOne({}).sort({ scheduled_publish_time: -1 }).exec(function (err, doc) {
+            applyFutureDate(doc);
+          });
+        //}
+      //});
+    }
+  };
+
+  function applyFutureDate(doc){
+    var date = new Date();
+
+    if (doc){
+      doc.scheduled_publish_time  = doc.scheduled_publish_time * 1000;
+      date = new Date(doc.scheduled_publish_time);
+    }
+
+    $('#schedule').calendar('set date', Calendar.nextGreatPostTime(date), true, true);
   }
 
-  updatePost();
-}
-
-function feedBuyLink(item) {
-  item.setBuyLink($('#url').val(), $('#source').val(), $('#medium').val(), $('#name').val());
-}
-
-
-function feedDescription(item){
-  item.setPatternsDescription(Emoji.text($('#description')));
-  item.setPatternBuyLink(Emoji.text($('#link-holder')));
-}
-
-function updateViews(){
-  updateDescriptionViews();
-  updateLinkViews();
-}
-
-function updateDescriptionViews(){
-  var item = getSelected();
-
-  Emoji.text($('#description'), item.getPatternDescription());
-  Emoji.text($('#link-holder'), item.getPatternBuyLink());
-
-  $('#category').val(item.product.category);
-  $('#price').val(item.product.price);
-
-  $('#select-hashtags:parent').dropdown('set exactly', item.getHashTagsArray());
-}
-
-function updateLinkViews(){
-  var item = getSelected();
-
-  $('#url').val(item.getBuyLink());
-  $('#source').val(item.getCampaignSource());
-  $('#medium').val(item.getCampaignMedium());
-  $('#name').val(item.getCampaignName());
-
-  $('#short-url').toggleClass('active',item.getShortBuyLink() != null);
-}
-
-function updatePost (){
-  var item = getSelected();
-
-  $('#main-description').empty();
-
-  let desc =  $('<p>').text(item.getBuildedDescription());
-
-  var url = item.getCampaignBuyLink();
-  url = url ? url : '{buy-link}';
-
-  var a = $('<a>').attr('id','buy-link').addClass('open-in-browser').attr('href', url).text(url);
-  var buyLink = $('<p>').html(item.getBuildedBuyLink().replace(url,[a.prop('outerHTML')]));
-  var hashtags = $('<p>').addClass('hashtags').text(item.getHashTags());
-
-  $('#main-description').append(desc, buyLink, hashtags);
-}
-
-
-function updateHashtags(remove, add) {
-  if (getSelected().getHashTags().indexOf(add) == -1){
-    if (same.description){
+  function setNewShortBuyLink(newBuyLink) {
+    if (same.link){
       getItems().forEach(function(item, index){
-        setNewHashtagItem(item, remove, add);
+        item.setShortBuyLink(newBuyLink);
       });
     }else{
-      setNewHashtagItem(getSelected(), remove, add);
+      getSelected().setShortBuyLink(newBuyLink);
     }
+
     updatePost();
   }
-}
 
-function setNewHashtagItem(item, remove, add) {
-  if (remove != undefined){
-    item.setHashTags(item.getHashTags().replace('#' + remove, '').trim());
+  function feedBuyLink(item) {
+    item.setBuyLink($('#url').val(), $('#source').val(), $('#medium').val(), $('#name').val());
   }
 
-  if (add != undefined){
-    item.setHashTags(item.getHashTags() + ' #' + add);
+
+  function feedDescription(item){
+    item.setPatternsDescription(Emoji.text($('#description')));
+    item.setPatternBuyLink(Emoji.text($('#link-holder')));
   }
-}
+
+  function updateViews(){
+    updateDescriptionViews();
+    updateLinkViews();
+  }
+
+  function updateDescriptionViews(){
+    var item = getSelected();
+
+    Emoji.text($('#description'), item.getPatternDescription());
+    Emoji.text($('#link-holder'), item.getPatternBuyLink());
+
+    $('#category').val(item.product.category);
+    $('#price').val(item.product.price);
+
+    $('#select-hashtags:parent').dropdown('set exactly', item.getHashTagsArray());
+  }
+
+  function updateLinkViews(){
+    var item = getSelected();
+
+    $('#url').val(item.getBuyLink());
+    $('#source').val(item.getCampaignSource());
+    $('#medium').val(item.getCampaignMedium());
+    $('#name').val(item.getCampaignName());
+
+    $('#short-url').toggleClass('active',item.getShortBuyLink() != null);
+  }
+
+  function updatePost (){
+    var item = getSelected();
+
+    $('#main-description').empty();
+
+    let desc =  $('<p>').text(item.getBuildedDescription());
+
+    var url = item.getCampaignBuyLink();
+    url = url ? url : '{buy-link}';
+
+    var a = $('<a>').attr('id','buy-link').addClass('open-in-browser').attr('href', url).text(url);
+    var buyLink = $('<p>').html(item.getBuildedBuyLink().replace(url,[a.prop('outerHTML')]));
+    var hashtags = $('<p>').addClass('hashtags').text(item.getHashTags());
+
+    $('#main-description').append(desc, buyLink, hashtags);
+  }
+
+  function updateHashtags(remove, add) {
+    if (getSelected().getHashTags().indexOf(add) == -1){
+      if (same.description){
+        getItems().forEach(function(item, index){
+          setNewHashtagItem(item, remove, add);
+        });
+      }else{
+        setNewHashtagItem(getSelected(), remove, add);
+      }
+      updatePost();
+    }
+  }
+
+  function setNewHashtagItem(item, remove, add) {
+    if (remove != undefined){
+      item.setHashTags(item.getHashTags().replace('#' + remove, '').trim());
+    }
+
+    if (add != undefined){
+      item.setHashTags(item.getHashTags() + ' #' + add);
+    }
+  }

@@ -31,7 +31,7 @@ module.exports =  {
     });
 
     if (sameBrand){
-      fmt(brand.toUpperCase());
+      brand = fmt(Util.removerAcentos(brand).toUpperCase());
     }else{
       fmt('products');
     }
@@ -40,13 +40,17 @@ module.exports =  {
       fmt(genderUrl(gender));
     }
 
-    callback(link + categoryFilter(categories));
-  }
+    callback(link + categoryFilter(categories), brand);
+  },
 
 };
 
 function fmt(s){
-  link += s ?  '/' + s.replace(/ /g,'-') : '';
+  var val = s.replace(/ /g,'-');
+
+  link += s ?  '/' + val : '';
+
+  return val;
 }
 
 
@@ -93,7 +97,7 @@ function categoryFilter(categories){
     }else if (is(item, 'sapato')){
       cat.push('tenis+sandalia+sapatilha');
     }else{
-      cat.push(item);
+      //cat.push(item);
     }
   });
 
