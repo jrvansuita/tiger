@@ -82,9 +82,12 @@ module.exports = {
 
   minimumStock : function(value){
     return _keepStr('minimum-stock', value, 0);
+  },
+
+  searchAttrs : function(value){
+    return _keepJson('search-attrs', value);
   }
 
-  
   // lastAttrsSearch : function(values){
   //   return _keepArr('last-attrs-search', values);
   // },

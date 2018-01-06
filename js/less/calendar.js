@@ -3,7 +3,7 @@ const db = require(_jsdir + 'db/DataBase.js');
 
 module.exports =  {
 
-  onChange : function(element, callbacak) {
+  onChange : function(element, callback) {
     var min = new Date();
     min.setMinutes(new Date().getMinutes() + 5);
 
@@ -15,25 +15,26 @@ module.exports =  {
       monthFirst: false,
       disableYear: true,
       onChange: function (date, text, mode) {
-        callbacak(date);
+        callback(date);
 
-        var selected = new Date(date.getTime());
+        if (date){
+          var selected = new Date(date.getTime());
 
-        var start = Math.round(selected.getTime() / 1000);
-        selected.setHours(selected.getHours()+1);
-        var end = Math.round(selected.getTime() / 1000);
+          var start = Math.round(selected.getTime() / 1000);
+          selected.setHours(selected.getHours()+1);
+          var end = Math.round(selected.getTime() / 1000);
 
-        db.posts().find({ $and: [{ scheduled_publish_time: {$gte: start}},
-          { scheduled_publish_time: {$lte: end} }] },
-          function (err, docs) {
+          db.posts().find({ $and: [{ scheduled_publish_time: {$gte: start}},
+            { scheduled_publish_time: {$lte: end} }] },
+            function (err, docs) {
 
-            docs.forEach(function (item, index) {
-              var d = new Date(item.scheduled_publish_time * 1000);
-              var hour = d.getHours() + ":" + ('0' + d.getMinutes()).slice(-2);
-              $('td:contains("'+hour+'")').css('background', 'rgba(122, 199, 107, 0.45)');
+              docs.forEach(function (item, index) {
+                var d = new Date(item.scheduled_publish_time * 1000);
+                var hour = d.getHours() + ":" + ('0' + d.getMinutes()).slice(-2);
+                $('td:contains("'+hour+'")').css('background', 'rgba(122, 199, 107, 0.45)');
+              });
             });
-          });
-
+          }
         }});
       },
 
@@ -44,7 +45,7 @@ module.exports =  {
         }
 
         var actualHour = actual.getHours();
-        var hours = [9, 10, 11, 12, 13, 14, 15, 19, 22];
+        var hours = [10, 11, 13, 15, 19, 22];
 
         for(var i = 0; i < hours.length; i++){
           var add = false;

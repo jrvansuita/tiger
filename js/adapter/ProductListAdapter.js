@@ -7,9 +7,10 @@ var Keep = require(_jsdir + 'prefs/Keep.js');
 module.exports = {
   init: function(){
     productsProvider.init();
+    recoverSelectedAttrs();
   },
 
-   hasSearchAttrs : function(){
+  hasSearchAttrs : function(){
     return productsProvider.hasAttrs();
   },
 
@@ -44,7 +45,10 @@ module.exports = {
     for(var i = 0; i < el.length; i++){
       skus.push($(el[i]).attr('sku'));
     }
+
     Keep.selectedProducts(skus);
+
+    return skus.length > 0;
   }
 
 };
@@ -143,43 +147,36 @@ function createRight(item){
   return media;
 }
 
-function createInnerLabel(value, text, field) {
+function createLabel(value, text, field, removeSelf) {
   var backgroundColor = field === 'color' ? util. strColorToColor(text) : util.strToColor(text);
   var fontColor = tinycolor(backgroundColor).getBrightness() > 200 ? '#403e3e' : 'white';
 
-  return  $('<strong>').text(text)
+  var label =  $('<strong>').text(text)
   .addClass('label')
   .attr('field', field)
   .attr('value', value)
   .css('background-color', backgroundColor)
   .css('color', fontColor);
-}
 
-
-
-function createLabel(value, text , field){
-  var label = createInnerLabel(value, text, field);
-  label.click(function(){
-
-    var field = $(this).attr('field');
-
-    if ($("div#label-box > strong[field=" + field + "]").length == 0){
-      var value = $(this).attr('value');
-      value = util.isNumbers(value) ? parseInt(value) : value;
-      //Keep.addLastAttrsSearch(field, value);
-
+  if (removeSelf){
+    label.click(function(){
+      $(this).remove();
       productsProvider.searchAttr(field, value);
+    });
+  }else{
+    label.click(function(){
+      var field = $(this).attr('field');
 
-      var dismissableLabel = createInnerLabel(value, text, field);
-      dismissableLabel.click(function(){
-        $(this).remove();
-        //Keep.removeLastAttrsSearch(field, value);
+      if ($("div#label-box > strong[field=" + field + "]").length == 0){
+        var value = $(this).attr('value');
+        value = util.isNumbers(value) ? parseInt(value) : value;
         productsProvider.searchAttr(field, value);
-      });
 
-      $('#label-box').append(dismissableLabel);
-    }
-  });
+        $('#label-box').append(createLabel(value, text, field, true));
+      }
+    });
+  }
+
 
   return label;
 }
@@ -212,4 +209,13 @@ function toggleChecked(index, check) {
 
 function createLink(label, url){
   return $('<a>').addClass('open-in-browser').attr('href', url).html(label);
+}
+
+function recoverSelectedAttrs(){
+  var attrs = Keep.searchAttrs();
+
+  Object.keys(attrs).forEach(function(key,index) {
+    var value = attrs[key];
+    $('#label-box').append(createLabel(value, value, key, true));
+  });
 }

@@ -43,7 +43,7 @@ function show(msg, iconClass, color, showLoader, dismiss) {
   if (dismiss || (dismiss === undefined)){
     $('#message-holder').stop().fadeIn(0).delay(5000).fadeOut('slow');
   }else{
-    $('#message-holder').show();
+    $('#message-holder').stop().show();
   }
 
 

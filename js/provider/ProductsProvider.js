@@ -8,7 +8,12 @@ var xmlUrl = 'https://www.boutiqueinfantil.com.br/media/feed/googleshopping.xml'
 module.exports = {
   init : function(){
     //Attr used to do the dynamic search
-    this.searchBundle = {};
+
+    if (jQuery.isEmptyObject(Keep.searchAttrs())){
+      this.searchBundle = {};
+    }else{
+      this.searchBundle = Keep.searchAttrs();
+    }
 
     //Já é iniciado como vazio.
     //this.previousSearchText = '';
@@ -31,7 +36,7 @@ module.exports = {
           getVal(it, 'id'),
           title,
           getVal(it, 'description'),
-          getVal(it, 'product_type'),
+          getCategory(getVal(it, 'product_type')),
           getVal(it, 'price'),
           getVal(it, 'quantity'),
           getVal(it, 'gender'),
@@ -59,6 +64,8 @@ module.exports = {
       }else{
         this.searchBundle[field] = value;
       }
+
+      Keep.searchAttrs(this.searchBundle);
     },
 
     hasAttrs(){
@@ -133,4 +140,10 @@ module.exports = {
     }
 
     return brand;
+  }
+
+  function getCategory(category){
+    //remove numbers
+    category = category.replace(/\d+/g, '').replace(/por/gi, '').trim();
+    return category;
   }

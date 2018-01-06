@@ -2,8 +2,10 @@ module.exports={
   loading : 'Loading...',
   finished : 'Finished',
   allProductsUpdated : 'All products updated.',
-  postPublished : 'Post published ',
-  emptySearch : 'Not possible with empty search. ',
+  published : 'Published',
+  scheduled : 'Scheduled',
+  emptySearch : 'Not possible with empty search',
+  not_products_selected : 'Please, select some products to proceed.',
 
   months : [
     "janeiro", "fevereiro", "março",

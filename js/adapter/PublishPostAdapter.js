@@ -150,10 +150,10 @@ module.exports = {
 
   handleShortLink : function(doShort){
     if (doShort){
-      msg.loading('Shortening url...');
+      //msg.loading('Shortening url...');
       short.get(getSelected().getCampaignBuyLink(), function(shortUrl){
         setNewShortBuyLink(shortUrl);
-        msg.finished();
+        //msg.finished();
       });
     }else{
       setNewShortBuyLink(null);

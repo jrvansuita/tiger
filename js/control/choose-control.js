@@ -33,8 +33,11 @@ $(document).ready(function(){
   });
 
   $('#publish').click(function(){
-    listAdapter.saveSelecteds();
+    if (listAdapter.saveSelecteds()){
     require(_jsdir + 'control/menu-control.js').showPublish();
+  }else{
+    msg.warn(cnt.not_products_selected);
+  }
   });
 
   $('#auto').click(function(){
@@ -46,7 +49,7 @@ $(document).ready(function(){
     $('#search-button').addClass('loading');
     listAdapter.execute($('#search').val(), function (){
       $('#search-button').removeClass('loading');
-      //restoreAttrs(listAdapter.hasSearchAttrs());
+
     });
   }
 
@@ -62,13 +65,3 @@ function storeKeepValues(){
 function restoreKeepValues(){
   $('#search').val(Keep.lastProductSearch());
 }
-
-// function restoreAttrs(hasAttrs){
-//   if (!hasAttrs){
-//     var arr = Keep.lastAttrsSearch();
-//     arr.forEach(function (item){
-//       var arr = item.split('-');
-//       $('strong[field="' + arr[0] + '"][value="' + arr[1] + '"]').first().click();
-//     });
-//   }
-// }

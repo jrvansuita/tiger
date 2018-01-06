@@ -72,7 +72,7 @@ function buildTriggers(){
 
   Calendar.onChange($('#schedule'), function(date){
     adapter.setScheduleTime(date);
-    $('#post-date').text(Util.longDate(date ? date : new Date()));
+    $('#post-date').text(Util.longDate(date ?date : new Date()));
   });
 
   $('#url, #source, #medium, #name').on('input',function(){
@@ -113,8 +113,14 @@ function buildTriggers(){
   });
 
   $('#future-date').click(function(){
+    if ($(this).hasClass('active')){
+      $('#schedule').calendar('clear');
+    }else{
+      adapter.setFutureDate();
+    }
+
     $(this).toggleClass('active');
-    adapter.setFutureDate();
+
   });
 }
 

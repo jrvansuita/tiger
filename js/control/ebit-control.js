@@ -26,6 +26,10 @@ $(document).ready(function(){
 
 });
 
+function storeKeepValues(){
+
+}
+
 function getClient(callback) {
   console.log('Requesting Client: ' + id);
 

@@ -12,7 +12,6 @@ function refreshtoken(){
   //Get the current facebook page token from keep
   var token = Keep.facebookToken(page.pageId, undefined);
 
-  console.log('Refresh: ' +  token);
   FB.setAccessToken(token);
 }
 
@@ -29,8 +28,6 @@ module.exports = {
 
     if (needNewToken()){
       exchangeTokens(function(newToken){
-
-        console.log("Got new token: " + newToken);
         //Save new token
         Keep.facebookToken(post.getPage().pageId, newToken);
 
@@ -79,8 +76,13 @@ function createPost() {
 
   FB.api(post.getPage().pageId + '/feed', 'post', post, function (res) {
     if (notError(res, 'create post')){
-      msg.sucess(cnt.postPublished);
 
+      if (post.unpublished_content_type == undefined){
+        msg.sucess(cnt.published);
+      }else{
+        msg.sucess(cnt.scheduled);
+      }
+      
       db.posts().insert(post);
     }
   });
@@ -97,9 +99,6 @@ function needNewToken(){
   if (need){
     Keep.lastExchangeFacebookToken(post.getPage().pageId, now);
   }
-
-
-  console.log("Need refresh: " + need);
   return need;
 }
 
