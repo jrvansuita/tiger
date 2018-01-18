@@ -6,12 +6,12 @@ const requests = require(_jsdir + 'util/requests.js');
 var xmlUrl = 'https://www.boutiqueinfantil.com.br/media/feed/googleshopping.xml';
 
 module.exports = {
-  init : function(){
+  init: function() {
     //Attr used to do the dynamic search
 
-    if (jQuery.isEmptyObject(Keep.searchAttrs())){
+    if (jQuery.isEmptyObject(Keep.searchAttrs())) {
       this.searchBundle = {};
-    }else{
+    } else {
       this.searchBundle = Keep.searchAttrs();
     }
 
@@ -20,14 +20,14 @@ module.exports = {
     //this.searchCallBack = null;
   },
 
-  updateAll : function (){
-    requests.getXml(xmlUrl, function (xml){
+  updateAll: function() {
+    requests.getXml(xmlUrl, function(xml) {
       msg.loading();
 
       var storage = db.products();
       var items = xml.getElementsByTagName('item');
 
-      for(var i=0; i < items.length; i++){
+      for (var i = 0; i < items.length; i++) {
         var it = items[i];
 
         var title = getVal(it, 'title');
@@ -45,105 +45,134 @@ module.exports = {
           getVal(it, 'link'),
           getVal(it, 'image_link'));
 
-          //Upserting Operation
-          storage.update({ sku: product.sku }, product, {upsert : true});
-        }
-        msg.sucess(cnt.allProductsUpdated);
-      });
-    },
-
-    setSearchCallBack(callback){
-      searchCallBack = callback;
-    },
-
-    toogleSearchAttr: function(field, value){
-      var previous = this.searchBundle[field];
-
-      if (previous === value){
-        delete this.searchBundle[field];
-      }else{
-        this.searchBundle[field] = value;
+        //Upserting Operation
+        storage.update({
+          sku: product.sku
+        }, product, {
+          upsert: true
+        });
       }
+      msg.sucess(cnt.allProductsUpdated);
+    });
+  },
 
-      Keep.searchAttrs(this.searchBundle);
-    },
+  setSearchCallBack(callback) {
+    searchCallBack = callback;
+  },
 
-    hasAttrs(){
-      return !jQuery.isEmptyObject(this.searchBundle);
-    },
+  toogleSearchAttr: function(field, value) {
+    var previous = this.searchBundle[field];
 
-    searchAttr(field, value){
-      this.toogleSearchAttr(field,value);
-      this.search(this.previousSearchText);
-    },
+    if (previous === value) {
+      delete this.searchBundle[field];
+    } else {
+      this.searchBundle[field] = value;
+    }
 
-    search: function(searchText){
-      this.previousSearchText = searchText;
+    Keep.searchAttrs(this.searchBundle);
+  },
 
-      let query = {};
-      query.$and = [];
+  hasAttrs() {
+    return !jQuery.isEmptyObject(this.searchBundle);
+  },
 
-      if (searchText){
-        query.$or = [{ sku: {$regex: new RegExp(searchText, 'i')} },
-        { title: {$regex: new RegExp(searchText, 'i')} },
-        { description: {$regex: new RegExp(searchText, 'i')}}];
-      }
+  searchAttr(field, value) {
+    this.toogleSearchAttr(field, value);
+    this.search(this.previousSearchText);
+  },
 
-      if (this.hasAttrs()){
-        query.$and.push(this.searchBundle);
-      }
+  search: function(searchText) {
+    this.previousSearchText = searchText;
 
-      query.$and.push({quantity: {$gt : parseInt(Keep.minimumStock())}});
+    let query = {};
+    query.$and = [];
 
-
-      db.products().find(query).sort({ quantity: -1 }).exec(function (err, docs) {
-        if (err){
-          msg.error(err);
-        }else{
-          if (searchCallBack){
-            searchCallBack(docs);
+    if (searchText) {
+      query.$or = [{
+          sku: {
+            $regex: new RegExp(searchText, 'i')
+          }
+        },
+        {
+          title: {
+            $regex: new RegExp(searchText, 'i')
+          }
+        },
+        {
+          description: {
+            $regex: new RegExp(searchText, 'i')
           }
         }
-      });
-    },
+      ];
+    }
 
-    findSkus(skus, callback){
-      db.products().find({sku: {$in: skus}})
-      .sort({ quantity: -1 })
-      .exec(function (err, docs) {
-        if (err){
+    if (this.hasAttrs()) {
+      query.$and.push(this.searchBundle);
+    }
+
+    query.$and.push({
+      quantity: {
+        $gt: parseInt(Keep.minimumStock())
+      }
+    });
+
+
+    db.products().find(query).sort({
+      quantity: -1
+    }).exec(function(err, docs) {
+      if (err) {
+        msg.error(err);
+      } else {
+        if (searchCallBack) {
+          searchCallBack(docs);
+        }
+      }
+    });
+  },
+
+  findSkus(skus, callback) {
+    db.products().find({
+        sku: {
+          $in: skus
+        }
+      })
+      .sort({
+        quantity: -1
+      })
+      .exec(function(err, docs) {
+        if (err) {
           msg.error(err);
-        }else{
-          if (callback){
+        } else {
+          if (callback) {
             callback(docs);
           }
         }
       });
-    }
-
-
-
-  };
-
-
-
-
-  function getVal(item, name) {
-    return item.getElementsByTagName(name)[0].textContent;
   }
 
-  function getBrand(name, brand) {
-    var a = name.split('-');
 
-    if (a.length > 1){
-      brand = a[1].trim();
-    }
 
-    return brand;
+};
+
+
+
+
+function getVal(item, name) {
+  return item.getElementsByTagName(name)[0].textContent;
+}
+
+function getBrand(name, brand) {
+  var a = name.split('-');
+
+  if (a.length > 1) {
+    brand = a[a.length - 1].trim();
   }
 
-  function getCategory(category){
-    //remove numbers
-    category = category.replace(/\d+/g, '').replace(/por/gi, '').trim();
-    return category;
-  }
+  return brand;
+}
+
+function getCategory(category) {
+  //remove numbers
+  category = category.replace(/\d+/g, '').replace(/por/gi, '').trim();
+  return category;
+}

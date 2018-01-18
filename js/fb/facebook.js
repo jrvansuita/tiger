@@ -1,12 +1,12 @@
-const FacebookPage =  require(_jsdir + 'bean/FacebookPage.js');
+const FacebookPage = require(_jsdir + 'bean/FacebookPage.js');
 const msg = require(_jsdir + 'util/msg.js');
 const cnt = require(_jsdir + 'res/cnt.js');
-const FB  =  require('fb');
+const FB = require('fb');
 const db = require(_jsdir + 'db/DataBase.js');
 
 var post;
 
-function refreshtoken(){
+function refreshtoken() {
   var page = post.getPage();
 
   //Get the current facebook page token from keep
@@ -17,7 +17,7 @@ function refreshtoken(){
 
 module.exports = {
 
-  postOnFacebook: function(postObject){
+  postOnFacebook: function(postObject) {
     //Não adiantou clonar, as functions dos items não são mantidas...
     //post = Object.assign(Object.create( Object.getPrototypeOf(postObject)), postObject);
     post = postObject;
@@ -26,36 +26,37 @@ module.exports = {
 
     refreshtoken();
 
-    if (needNewToken()){
-      exchangeTokens(function(newToken){
+    if (needNewToken()) {
+      exchangeTokens(function(newToken) {
         //Save new token
         Keep.facebookToken(post.getPage().pageId, newToken);
 
         refreshtoken();
         doPost();
       });
-    }else{
+    } else {
       doPost();
     }
   }
 };
 
-function doPost(){
+function doPost() {
   post.assertItemsFacebook();
 
-  post.getItems().forEach(function(item, order){
+  post.getItems().forEach(function(item, order) {
     //Keep the order that user selected
     //The upload here is not resulting on correct order
     item.order = order;
 
-    uploadImage(item, function(res, index){
-      if (notError(res, 'upload')){
+    uploadImage(item, function(res, index) {
+      if (notError(res, 'upload')) {
         post.addAttachedMedia(res.id, index);
 
-        if (post.hasIdMediasForAll()){
+        if (post.hasIdMediasForAll()) {
+
           createPost();
         }
-      }else{
+      } else {
         return;
       }
     });
@@ -64,8 +65,8 @@ function doPost(){
 }
 
 function uploadImage(item, callback) {
-  FB.api(post.getPage().pageId + '/photos', 'post', item, function (res) {
-    if (callback){
+  FB.api(post.getPage().pageId + '/photos', 'post', item, function(res) {
+    if (callback) {
       callback(res, item.order);
     }
   });
@@ -74,42 +75,44 @@ function uploadImage(item, callback) {
 function createPost() {
   post.assertFacebook();
 
-  FB.api(post.getPage().pageId + '/feed', 'post', post, function (res) {
-    if (notError(res, 'create post')){
+  FB.api(post.getPage().pageId + '/feed', 'post', post, function(res) {
+    if (notError(res, 'create post')) {
 
-      if (post.unpublished_content_type == undefined){
+      if (post.unpublished_content_type == undefined) {
         msg.sucess(cnt.published);
-      }else{
+      } else {
         msg.sucess(cnt.scheduled);
       }
-      
+
       db.posts().insert(post);
     }
   });
 }
 
-function needNewToken(){
+function needNewToken() {
   var last = Keep.lastExchangeFacebookToken(post.getPage().pageId);
   var now = new Date().getTime();
   var hours = 2;
 
   //Compare days between today and the last time we exchanged the token
-  var need =  Math.round(now-last) >= hours * 36e5;
+  var need = Math.round(now - last) >= hours * 36e5;
 
-  if (need){
+  if (need) {
     Keep.lastExchangeFacebookToken(post.getPage().pageId, now);
   }
   return need;
 }
 
-function exchangeTokens(callback){
+function exchangeTokens(callback) {
   FB.api('oauth/access_token', {
-    client_id: '396005934189478', /* Tiger App ID */
-    client_secret: 'a66742f32f2b702708681af73d3a9b74', /* Tiger App Secret */
+    client_id: '396005934189478',
+    /* Tiger App ID */
+    client_secret: 'a66742f32f2b702708681af73d3a9b74',
+    /* Tiger App Secret */
     grant_type: 'fb_exchange_token',
     fb_exchange_token: FB.getAccessToken()
-  }, function (res) {
-    if (notError(res,'exchange token')){
+  }, function(res) {
+    if (notError(res, 'exchange token')) {
       var accessToken = res.access_token;
       var expires = res.expires ? res.expires : 0;
       callback(accessToken, expires);
@@ -118,8 +121,8 @@ function exchangeTokens(callback){
 }
 
 function notError(e, tag) {
-  if(e.error) {
-    msg.error((tag ? tag + ': ' : '') +  e.error.message);
+  if (e.error) {
+    msg.error((tag ? tag + ': ' : '') + e.error.message);
     return false;
   }
 
