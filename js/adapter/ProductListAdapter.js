@@ -43,8 +43,8 @@ module.exports = {
     var skus = [];
     var $el = $('.checked');
 
-    for (var i = 0; i < el.length; i++) {
-      skus.push($(el[i]).attr('sku'));
+    for (var i = 0; i < $el.length; i++) {
+      skus.push($($el[i]).attr('sku'));
     }
 
     Keep.selectedProducts(skus);
