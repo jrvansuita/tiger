@@ -49,7 +49,7 @@ function doPost() {
     item.order = order;
 
     uploadImage(item, function(res, index) {
-      if (notError(res, 'upload')) {
+      if (notError(res, 'Upload')) {
         post.addAttachedMedia(res.id, index);
 
         if (post.hasIdMediasForAll()) {
@@ -76,7 +76,7 @@ function createPost() {
   post.assertFacebook();
 
   FB.api(post.getPage().pageId + '/feed', 'post', post, function(res) {
-    if (notError(res, 'create post')) {
+    if (notError(res, 'Post')) {
 
       if (post.unpublished_content_type == undefined) {
         msg.sucess(cnt.published);
@@ -112,7 +112,7 @@ function exchangeTokens(callback) {
     grant_type: 'fb_exchange_token',
     fb_exchange_token: FB.getAccessToken()
   }, function(res) {
-    if (notError(res, 'exchange token')) {
+    if (notError(res, 'Token')) {
       var accessToken = res.access_token;
       var expires = res.expires ? res.expires : 0;
       callback(accessToken, expires);
@@ -121,8 +121,17 @@ function exchangeTokens(callback) {
 }
 
 function notError(e, tag) {
+
+
   if (e.error) {
-    msg.error((tag ? tag + ': ' : '') + e.error.message);
+
+    var message = e.error.message;
+
+    if (e.error.message.contains('invalid image file')) {
+      message = 'Um ou mais links das imagens não está funcionando (404).';
+    }
+
+    msg.error((tag ? tag + ': ' : '') + message);
     return false;
   }
 

@@ -1,38 +1,39 @@
-body{
+body {
   background-color: #e9ebee !important;
 }
 
-.window{
+.window {
   background-color: transparent;
 }
 
-a, img{
+a, img {
   cursor: pointer;
 }
 
-.main{
+.main {
   position: relative;
   display: -webkit-box;
 }
-.btn-group{
+
+.btn-group {
   margin-left: 10px;
 }
 
-.img-circle{
+.img-circle {
   border: 1px solid #d5d3d5 !important;
 }
 
-.focused{
+.focused {
   border-color: #85b7d9 !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
 
-.fixed-header{
+.fixed-header {
   display: inline-flex;
   position: fixed;
   z-index: 2;
-  padding-left:  10px;
+  padding-left: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-right: 10px;
@@ -41,34 +42,31 @@ a, img{
   border-bottom: 1px solid #dfdddf;
 }
 
-
-
-
-.title{
+.title {
   font-weight: bold !important;
 }
 
-.description-body{
-  max-width:500px;
-  word-wrap:break-word;
-  white-space: pre-line ;
+.description-body {
+  max-width: 500px;
+  word-wrap: break-word;
+  white-space: pre-line;
 }
 
-#hint-message{
+#hint-message {
   font-weight: 400 !important;
 }
 
-*{
+* {
   cursor: default;
   -webkit-user-select: text;
 }
 
-.open-in-browser{
+.open-in-browser {
   color: #365899;
   font-weight: 600;
 }
 
-a{
+a {
   color: #403e3e;
   font-size: 14px;
   font-weight: bold;
@@ -76,12 +74,11 @@ a{
   outline: none;
 }
 
-.no-overflow{
+.no-overflow {
   overflow: inherit !important;
 }
 
-
-.simple-panel{
+.simple-panel {
   position: relative;
   margin: 10px;
   border-width: 0.1em;
@@ -95,28 +92,45 @@ a{
   height: 100%;
 }
 
-.ui.top.attached.label{
+.ui.top.attached.label {
   width: 100.4% !important;
   left: -1px !important;
   background-color: #d5d3d5 !important;
 }
 
-
-.inline.loader, .ui.loader:after, .ui.loader:before{
+.inline.loader, .ui.loader:after, .ui.loader:before {
   width: 15px !important;
   height: 15px !important;
 }
 
-.inline.loader{
-  margin-left:5px !important;
+.inline.loader {
+  margin-left: 5px !important;
 }
 
-#message-holder{
-  margin-right:5px;
+#message-holder {
+  margin-right: 5px;
   margin-top: 2px;
 }
 
-#hint-message{
-  margin-top:2px;
+#hint-message {
+  margin-top: 2px;
   margin-right: 5px;
+}
+
+.label {
+  border-width: 0.1em;
+  border-style: solid;
+  border-color: hsla(0, 2%, 70%, 0.31);
+  border-radius: 2px;
+  cursor: pointer;
+  line-height: 25px;
+  background: #7d7d80;
+  color: white;
+  padding: 5px;
+  margin: 5px 5px 5px 0px;
+  transition: all .2s ease-in-out;
+}
+
+.label:hover {
+  opacity: 0.8;
 }

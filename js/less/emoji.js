@@ -1,7 +1,5 @@
-
-
-module.exports =  {
-  build : function(element) {
+module.exports = {
+  build: function(element) {
     element.emojioneArea({
       search: true,
       searchPlaceholder: "Search",
@@ -14,22 +12,23 @@ module.exports =  {
     });
   },
 
-  onInput : function(element, callback) {
+  onInput: function(element, callback) {
     element.emojioneArea()[0].emojioneArea
-    .on('keyup',function(){
-      callback();
-    })
-    .on('emojibtn.click',function(){
-      callback();
-    });
+      .on('keyup', function() {
+        callback();
+      })
+      .on('emojibtn.click', function() {
+        callback();
+      });
   },
 
-  text : function(element, text) {
-    if (text != undefined){
-      element.emojioneArea()[0].emojioneArea.setText(text);
-    }else{
-      return element.emojioneArea()[0].emojioneArea.getText();
-    }
+  text: function(element, text) {
+    if (element)
+      if (text != undefined) {
+        element.emojioneArea()[0].emojioneArea.setText(text);
+      } else {
+        return element.emojioneArea()[0].emojioneArea.getText();
+      }
   },
 
 };

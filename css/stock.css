@@ -1,0 +1,27 @@
+.div-label {
+  display: block;
+  padding: 0px;
+}
+
+.lable-unit {
+  margin: 0px;
+  position: relative;
+  line-height: normal;
+  vertical-align: top;
+  display: inline-block;
+  padding: .5833em .433em;
+}
+
+.info {
+  display: inline-block;
+  opacity: .8;
+  background-color: rgba(0, 0, 0, .1);
+}
+
+#stock-holder {
+  display: block;
+}
+
+.simple-panel {
+  max-width: 300px;
+}

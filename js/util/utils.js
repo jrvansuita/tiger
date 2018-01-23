@@ -140,5 +140,19 @@ module.exports = {
     return string;
   },
 
+  short: function(str, max) {
+
+    if (str.length > max) {
+      return str.substring(0, max - 3) + '...';
+    }
+
+    return str;
+  },
+
+  daysDiff: function(dateA, dateB) {
+    var timeDiff = Math.abs(dateA.getTime() - dateB.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return diffDays;
+  }
 
 };

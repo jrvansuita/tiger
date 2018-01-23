@@ -20,6 +20,11 @@ module.exports = {
     //this.searchCallBack = null;
   },
 
+  clear() {
+    this.searchBundle = {};
+    this.previousSearchText = '';
+  },
+
   updateAll: function() {
     requests.getXml(xmlUrl, function(xml) {
       msg.loading();
@@ -149,9 +154,6 @@ module.exports = {
         }
       });
   }
-
-
-
 };
 
 
