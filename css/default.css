@@ -10,6 +10,10 @@ a, img {
   cursor: pointer;
 }
 
+.copiable {
+  cursor: copy !important;
+}
+
 .main {
   position: relative;
   display: -webkit-box;
@@ -96,6 +100,11 @@ a {
   width: 100.4% !important;
   left: -1px !important;
   background-color: #d5d3d5 !important;
+  cursor: default !important;
+}
+
+.ui.top.attached.label:hover {
+  background-color: #d5d3d5 !important;
 }
 
 .inline.loader, .ui.loader:after, .ui.loader:before {
@@ -133,4 +142,18 @@ a {
 
 .label:hover {
   opacity: 0.8;
+}
+
+.zoom-img {
+  z-index: 5;
+  position: absolute;
+  width: 400px !important;
+  height: 400px !important;
+  -webkit-box-shadow: 10px 10px 30px 0px rgba(50, 50, 50, 0.63);
+  -moz-box-shadow: 10px 10px 30px 0px rgba(50, 50, 50, 0.63);
+  box-shadow: 10px 10px 30px 0px rgba(50, 50, 50, 0.63);
+}
+
+.min-label {
+  min-width: 200px;
 }

@@ -1,4 +1,3 @@
-const FacebookPage = require(_jsdir + 'bean/FacebookPage.js');
 const msg = require(_jsdir + 'util/msg.js');
 const cnt = require(_jsdir + 'res/cnt.js');
 const FB = require('fb');
@@ -6,14 +5,6 @@ const db = require(_jsdir + 'db/DataBase.js');
 
 var post;
 
-function refreshtoken() {
-  var page = post.getPage();
-
-  //Get the current facebook page token from keep
-  var token = Keep.facebookToken(page.pageId, undefined);
-
-  FB.setAccessToken(token);
-}
 
 module.exports = {
 
@@ -24,14 +15,14 @@ module.exports = {
 
     msg.loading();
 
-    refreshtoken();
+    FB.setAccessToken(Keep.facebookToken());
 
     if (needNewToken()) {
       exchangeTokens(function(newToken) {
         //Save new token
-        Keep.facebookToken(post.getPage().pageId, newToken);
+        Keep.facebookToken(newToken);
 
-        refreshtoken();
+        FB.setAccessToken(newToken);
         doPost();
       });
     } else {
@@ -65,7 +56,7 @@ function doPost() {
 }
 
 function uploadImage(item, callback) {
-  FB.api(post.getPage().pageId + '/photos', 'post', item, function(res) {
+  FB.api(Keep.facebookPageId() + '/photos', 'post', item, function(res) {
     if (callback) {
       callback(res, item.order);
     }
@@ -75,13 +66,13 @@ function uploadImage(item, callback) {
 function createPost() {
   post.assertFacebook();
 
-  FB.api(post.getPage().pageId + '/feed', 'post', post, function(res) {
+  FB.api(Keep.facebookPageId() + '/feed', 'post', post, function(res) {
     if (notError(res, 'Post')) {
 
       if (post.unpublished_content_type == undefined) {
-        msg.sucess(cnt.published);
+        msg.sucess(cnt.published_to_facebook);
       } else {
-        msg.sucess(cnt.scheduled);
+        msg.sucess(cnt.scheduled_on_facebook);
       }
 
       db.posts().insert(post);
@@ -90,7 +81,7 @@ function createPost() {
 }
 
 function needNewToken() {
-  var last = Keep.lastExchangeFacebookToken(post.getPage().pageId);
+  var last = Keep.lastExchangeFacebookToken();
   var now = new Date().getTime();
   var hours = 2;
 
@@ -98,16 +89,16 @@ function needNewToken() {
   var need = Math.round(now - last) >= hours * 36e5;
 
   if (need) {
-    Keep.lastExchangeFacebookToken(post.getPage().pageId, now);
+    Keep.lastExchangeFacebookToken(now);
   }
   return need;
 }
 
 function exchangeTokens(callback) {
   FB.api('oauth/access_token', {
-    client_id: '396005934189478',
+    client_id: Keep.tigerClientId(),
     /* Tiger App ID */
-    client_secret: 'a66742f32f2b702708681af73d3a9b74',
+    client_secret: Keep.tigerClientSecret(),
     /* Tiger App Secret */
     grant_type: 'fb_exchange_token',
     fb_exchange_token: FB.getAccessToken()
@@ -128,7 +119,7 @@ function notError(e, tag) {
     var message = e.error.message;
 
     if (e.error.message.contains('invalid image file')) {
-      message = 'Um ou mais links das imagens não está funcionando (404).';
+      message = cnt.link_broken;
     }
 
     msg.error((tag ? tag + ': ' : '') + message);

@@ -27,7 +27,7 @@ module.exports = {
     "Venha conferir suas marcas preferidas com um descontão! ❤️ \n\n Outlet com até 60% Off",
     "Top Marcas de {.category} a partir de {.price}!",
     "Para o dia a dia dos pequenos ❤ \n\n {.category} com até 75%Off",
-    "Levanta a mão ou marque quem vai morrer de vontade de comprar esse post todo! 🙋‍🙋",
+    "Levante a mão ou marque quem vai morrer de vontade de comprar todas as peças desse post! 🙋‍🙋",
     "O melhor preço do Brasil você só encontra na Boutique Infantil 💎 \n\n {.category} por somente {.price}"
   ],
 

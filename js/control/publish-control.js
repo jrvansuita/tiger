@@ -1,15 +1,15 @@
-
 /* -- Imports -- */
 
 var provider = require(_jsdir + 'provider/ProductsProvider.js');
-var Facebook =  require(_jsdir + 'fb/facebook.js');
-var Insta = require(_jsdir + 'insta/InstagramProfile.js');
+
 var adapter = require(_jsdir + 'adapter/PublishPostAdapter.js');
 var short = require(_jsdir + 'util/short-url.js');
 var Emoji = require(_jsdir + 'less/emoji.js');
 var Calendar = require(_jsdir + 'less/calendar.js');
 var MultiSelect = require(_jsdir + 'less/multiselect.js');
-var FacebookPage = require(_jsdir +'bean/FacebookPage.js');
+var FaceApi = require(_jsdir + 'fb/FaceApi.js');
+var InstApi = require(_jsdir + 'insta/InstApi.js');
+
 
 /* -- Variables -- */
 
@@ -17,9 +17,9 @@ var products;
 
 /* -- Ready -- */
 
-$(document).ready(function(){
+$(document).ready(function() {
   //Find products from selected array
-  provider.findSkus(Keep.selectedProducts(), function (data) {
+  provider.findSkus(Keep.selectedProducts(), function(data) {
     products = data;
     adapter.init(products);
     adapter.buildGallery();
@@ -29,63 +29,68 @@ $(document).ready(function(){
     buildTriggers();
     loadProfileInfo();
 
-    setTimeout(function(){
+    setTimeout(function() {
       adapter.select(products[0].sku);
 
       restoreKeepValues();
-    },100);
+    }, 100);
   });
 });
 
 
-function buildTriggers(){
+function buildTriggers() {
 
   MultiSelect.build($('#select-hashtags:parent'),
-  function(addedValue){
-    adapter.addHashtag(addedValue.replace(/\s/g, ''));
-  },function(removedValue){
-    adapter.removeHashtag(removedValue);
+    function(addedValue) {
+      adapter.addHashtag(addedValue.replace(/\s/g, ''));
+    },
+    function(removedValue) {
+      adapter.removeHashtag(removedValue);
+    });
+
+  $('#facebook-post').click(function() {
+    adapter.facePost();
   });
 
-  $('#post-boutique').click(function(){
-    adapter.makePost(FacebookPage.boutique());
+  $('#instagram-post').click(function() {
+    if ($('#schedule-val').val() !== '') {
+      $('#schedule-warn').text(cnt.cant_schedule_on_instagram).fadeIn();
+    } else {
+      $('#schedule-warn').fadeOut();
+      adapter.instaPost();
+    }
   });
 
-  $('#post-test').click(function(){
-    adapter.makePost(FacebookPage.test());
-  });
-
-
-  $('#regenerate').click(function(){
+  $('#regenerate').click(function() {
     adapter.setNewSugested();
   });
 
   Emoji.build($('#link-holder'));
-  Emoji.onInput($('#link-holder'), function(){
+  Emoji.onInput($('#link-holder'), function() {
     onDescriptionChanged();
   });
 
   Emoji.build($('#description'));
-  Emoji.onInput($('#description'), function(){
+  Emoji.onInput($('#description'), function() {
     onDescriptionChanged();
   });
 
-  Calendar.onChange($('#schedule'), function(date){
+  Calendar.onChange($('#schedule'), function(date) {
     adapter.setScheduleTime(date);
-    $('#post-date').text(Util.longDate(date ?date : new Date()));
+    $('#post-date').text(Util.longDate(date ? date : new Date()));
   });
 
-  $('#url, #source, #medium, #name').on('input',function(){
+  $('#url, #source, #medium, #name').on('input', function() {
     onBuyLinkChanged();
 
     onDoShortLink(false);
   });
 
-  $('#token').click(function(){
+  $('#token').click(function() {
     adapter.testeToken();
   });
 
-  $('#check-in').click(function(){
+  $('#check-in').click(function() {
     $(this).toggleClass('active');
 
     var checkIn = $(this).hasClass('active');
@@ -97,25 +102,25 @@ function buildTriggers(){
     onDoShortLink(!$(this).hasClass('active'));
   });
 
-  $('.img-item').click(function(){
-    if (!$(this).hasClass('selected')){
+  $('.img-item').click(function() {
+    if (!$(this).hasClass('selected')) {
       adapter.select($(this).attr('data-id'));
     }
   });
 
-  $('#same-link, #same-description').click(function(){
+  $('#same-link, #same-description').click(function() {
     adapter.toggleSame($(this).attr('same'));
     $(this).toggleClass('active');
   });
 
-  $('#lab-link').click(function(){
+  $('#lab-link').click(function() {
     applyMagicLink();
   });
 
-  $('#future-date').click(function(){
-    if ($(this).hasClass('active')){
+  $('#future-date').click(function() {
+    if ($(this).hasClass('active')) {
       $('#schedule').calendar('clear');
-    }else{
+    } else {
       adapter.setFutureDate();
     }
 
@@ -124,36 +129,36 @@ function buildTriggers(){
   });
 }
 
-function applyMagicLink(callback){
+function applyMagicLink(callback) {
   $('#lab-link').addClass('active');
 
-  adapter.labLink(function (newLink, brand){
+  adapter.labLink(function(newLink, brand) {
     $('#url').val(newLink);
 
-    if (brand){
-      $('#name').val(brand.toLowerCase() );
+    if (brand) {
+      $('#name').val(brand.toLowerCase());
     }
 
     onBuyLinkChanged();
     onDoShortLink(false);
 
 
-    if (callback != undefined){
+    if (callback != undefined) {
       callback();
     }
   });
 }
 
-function onDoShortLink(doShort){
+function onDoShortLink(doShort) {
   $('#short-url').toggleClass('active', doShort);
 
-  if ($('#url').val()){
+  if ($('#url').val()) {
     adapter.handleShortLink(doShort);
   }
 }
 
-function loadProfileInfo(){
-  Insta.getData(function(profile){
+function loadProfileInfo() {
+  InstApi.getProfile(function(profile) {
     $('#profile-thumb').attr('src', profile.pic);
     $('#profile-name').text(profile.name);
     $('.post-info').stop().css('visibility', 'visible').fadeIn(300);
@@ -161,19 +166,19 @@ function loadProfileInfo(){
   });
 }
 
-function onBuyLinkChanged(){
-  if ($('#url').val()){
+function onBuyLinkChanged() {
+  if ($('#url').val()) {
     var inputUrl = $('#url')[0];
     inputUrl.value = Util.removeProtocol(inputUrl.value);
     adapter.swapBuyLink();
   }
 }
 
-function onDescriptionChanged(){
+function onDescriptionChanged() {
   adapter.swapDescription();
 }
 
-function storeKeepValues(){
+function storeKeepValues() {
 
   Keep.buyUrl($('#url').val());
   Keep.campaignSource($('#source').val());
@@ -185,7 +190,7 @@ function storeKeepValues(){
   Keep.futureDate($('#future-date').hasClass('active'));
 }
 
-function restoreKeepValues(){
+function restoreKeepValues() {
   $('#url').val(Keep.buyUrl());
   $('#source').val(Keep.campaignSource());
   $('#medium').val(Keep.campaignMedium());
@@ -193,23 +198,23 @@ function restoreKeepValues(){
 
   onBuyLinkChanged();
 
-  if (Keep.magicLink()){
-    applyMagicLink(function(){
-      if (Keep.shortBuyUrl()){
+  if (Keep.magicLink()) {
+    applyMagicLink(function() {
+      if (Keep.shortBuyUrl()) {
         $('#short-url').click();
       }
     });
-  }else{
-    if (Keep.shortBuyUrl()){
+  } else {
+    if (Keep.shortBuyUrl()) {
       $('#short-url').click();
     }
   }
 
-  if (Keep.checkIn()){
+  if (Keep.checkIn()) {
     $('#check-in').click();
   }
 
-  if (Keep.futureDate()){
+  if (Keep.futureDate()) {
     $('#future-date').click();
   }
 }

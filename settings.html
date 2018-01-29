@@ -1,83 +1,152 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>@import url('./css/settings.css');</style>
 
-  <script>$.getScript('./js/control/settings-control.js');</script>
-</head>
-<body>
+  <head>
+    <style>
+      @import url('./css/settings.css');
+    </style>
+
+    <script>
+      $.getScript('./js/control/settings-control.js');
+    </script>
+  </head>
+
+  <body>
 
 
-  <div class="window-frame">
+    <div class="window-frame">
 
-    <div class="fixed-header" style="position:relative">
-      <div class="btn-group">
+      <div class="fixed-header" style="position:relative">
+        <div class="btn-group">
 
 
-        <button class="ui labeled icon button" id="nothing">
+          <button class="ui labeled icon button" id="nothing">
           <i class="bug icon"></i>
           Nothing
         </button>
 
+        </div>
+      </div>
+
+      <div class="main">
+
+        <div>
+
+          <div class="simple-panel">
+            <div class="ui top attached label">PRODUCT LIST</div>
+            <div class="ui info message">Only shows products that matches this configuration.</div>
+
+            <div class="ui right labeled input">
+              <div class="ui label">
+                Minimum Stock
+              </div>
+              <input type="number" placeholder="Quantity" id="minimum-stock">
+              <div class="ui basic label">
+                Un
+              </div>
+            </div>
+
+          </div>
+
+          <div class="simple-panel">
+            <div class="ui top attached label">UPDATE CONTENT</div>
+
+            <div class="ui fluid vertical basic buttons">
+              <button class="ui fluid button" id="products">Force Products</button>
+              <button class="ui fluid button" id="templates">Force Templates</button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div>
+          <div class="simple-panel">
+            <div class="ui top attached label">FACEBOOK TIGER APP</div>
+
+            <div class="first-div">
+
+              <div class="ui labeled input">
+                <div class="ui label">
+                  Client ID
+                </div>
+                <input type="text" placeholder="Empty" id="tiger-client-id">
+              </div>
+
+              <img src="./assets/icons/icon_gray.png" class="first-icon" />
+
+            </div>
+
+
+            <div class="ui labeled input">
+              <div class="ui label">
+                Secret
+              </div>
+              <input type="text" placeholder="Empty" id="tiger-secret">
+            </div>
+
+          </div>
+
+
+          <div class="simple-panel">
+            <div class="ui top attached label">FACEBOOK CRETENTIALS</div>
+
+            <div class="first-div">
+              <div class="ui labeled input">
+                <div class="ui label">
+                  Page Name
+                </div>
+                <input type="text" placeholder="Page Name" id="fb-page-name">
+              </div>
+
+              <img src="./assets/icons/fb_gray.png" class="first-icon" />
+            </div>
+
+            <div class="ui labeled input">
+              <div class="ui label">
+                Page ID
+              </div>
+              <input type="text" placeholder="Page Id" id="fb-page-id">
+            </div>
+
+            <div class="ui labeled input">
+              <div class="ui label">
+                Token
+              </div>
+              <input type="text" placeholder="Empty Token" id="fb-token">
+            </div>
+
+
+            <div class="ui ignored message">Get the first Facebook access token <a href="https://developers.facebook.com/tools/explorer/">here</a>.</div>
+
+          </div>
+
+          <div class="simple-panel">
+            <div class="ui top attached label">INSTAGRAM CREDENTIALS</div>
+
+            <div class="first-div">
+              <div class="ui labeled input">
+                <div class="ui label">
+                  Username
+                </div>
+                <input type="text" placeholder="Username" id="insta-user">
+              </div>
+              <img src="./assets/icons/insta_gray.png" class="first-icon" />
+            </div>
+
+
+            <div class="ui labeled input">
+              <div class="ui label">
+                Password
+              </div>
+              <input type="text" placeholder="Password" id="insta-pass">
+            </div>
+
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="main">
+  </body>
 
-      <div>
-
-        <div class="simple-panel">
-          <div class="ui top attached label">PRODUCT LIST</div>
-          <div class="ui info message">Only shows products that matches this configuration.</div>
-
-          <div class="ui right labeled input">
-            <div class="ui label">
-              Minimum Stock
-            </div>
-            <input type="number" placeholder="Quantity" id="minimum-stock">
-            <div class="ui basic label">
-              Un
-            </div>
-          </div>
-
-        </div>
-
-        <div class="simple-panel">
-          <div class="ui top attached label">UPDATE CONTENT</div>
-
-          <div class="ui fluid vertical basic buttons">
-            <button class="ui fluid button" id="products">Products</button>
-            <button class="ui fluid button" id="templates">Templates</button>
-          </div>
-
-        </div>
-
-      </div>
-
-      
-      <div class="simple-panel">
-        <div class="ui top attached label">FACEBOOK TOKENS</div>
-
-        <div class="ui ignored message">Get the first Facebook access token <a href="https://developers.facebook.com/tools/explorer/">here</a>.</div>
-
-        <div class="ui labeled input">
-          <div class="ui label">
-            Boutique Infantil
-          </div>
-          <input type="text" placeholder="Empty Token" id="bi-token">
-        </div>
-
-        <div class="ui labeled input">
-          <div class="ui label">
-            Test Page
-          </div>
-          <input type="text" placeholder="Empty Token" id="t-token">
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
-</body>
 </html>

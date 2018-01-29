@@ -72,12 +72,36 @@ module.exports = {
     return _keepStr('check-in', value, true) == 'true';
   },
 
-  lastExchangeFacebookToken(pageId, time) {
-    return parseInt(_keepStr('last-exchange-token-' + pageId, time, 0));
+  lastExchangeFacebookToken(time) {
+    return parseInt(_keepStr('last-fb-exchange-token', time, 0));
   },
 
-  facebookToken(id, token) {
-    return _keepStr('facebook-token-' + id, token);
+  facebookToken(token) {
+    return _keepStr('fb-token', token);
+  },
+
+  facebookPageName(name) {
+    return _keepStr('fb-page-name', name, 'lojaboutiqueinfantil');
+  },
+
+  facebookPageId(id) {
+    return _keepStr('fb-page-id', id, '1615033445450026');
+  },
+
+  tigerClientId(clientId) {
+    return _keepStr('tiger-client-id', clientId, '396005934189478'); //Default
+  },
+
+  tigerClientSecret(clientSecret) {
+    return _keepStr('tiger-secret-client', clientSecret, 'a66742f32f2b702708681af73d3a9b74'); //Default
+  },
+
+  instaUser(user) {
+    return _keepStr('insta-user', user);
+  },
+
+  instaPass(pass) {
+    return _keepStr('insta-pass', pass);
   },
 
   lastProductSearch: function(value) {

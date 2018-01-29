@@ -1,4 +1,19 @@
 .ui.labeled.input {
-    width: 100%;
-    margin: 2px;
+  width: 100%;
+  margin: 2px;
+  height: 50%;
+}
+
+.first-icon {
+  margin-left: 10px;
+  width: 42px;
+  height: 42px;
+}
+
+.first-div {
+  display: flex;
+}
+
+.labeled.input>.ui.label:first-child {
+  min-width: 100px;
 }

@@ -13,6 +13,7 @@ var Prototype = require(_jsdir + 'util/Prototype.js');
 var msg = require(_jsdir + 'util/msg.js');
 var cnt = require(_jsdir + 'res/cnt.js');
 var Util = require(_jsdir + 'util/utils.js');
+var request = require('request');
 
 $(document).ready(function() {
   Prototype.build();

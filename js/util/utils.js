@@ -153,6 +153,27 @@ module.exports = {
     var timeDiff = Math.abs(dateA.getTime() - dateB.getTime());
     var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
     return diffDays;
+  },
+
+  toBuffer: function(order, url, callback) {
+    request({
+      url: url,
+      encoding: null
+    }, function(error, response, body) {
+      callback(order, url, body);
+    });
+  },
+
+  selectContent: function(element) {
+    var range = document.createRange();
+    range.selectNodeContents(element);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  },
+
+  copySeleted: function() {
+    return document.execCommand('copy');
   }
 
 };

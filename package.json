@@ -14,15 +14,14 @@
   ],
   "author": "Jr Vansuita",
   "license": "Apache-2.0",
-
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:boutiqueinfantil/tiger.git"
   },
-
-   "dependencies": {
+  "dependencies": {
     "emojionearea": "^3.2.6",
     "fb": "^2.0.0",
+    "instagram-private-api": "^0.6.7",
     "jquery": "^3.2.1",
     "nedb": "^1.8.0",
     "semantic-ui": "^2.2.13",
@@ -31,7 +30,6 @@
     "sortablejs": "^1.7.0",
     "tinycolor2": "^1.4.1"
   },
-
   "devDependencies": {
     "electron": "~1.7.8",
     "electron-packager": "^10.1.0"

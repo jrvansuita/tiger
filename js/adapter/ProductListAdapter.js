@@ -110,9 +110,23 @@ function createLeft(index, item) {
   var checked = $('<input>', {
     type: 'checkbox',
   }).attr('id', checkBoxId).css('display', 'none');
-  var img = $('<img>').attr('src', item.imageUrl).addClass('thumb');
 
-  var label = $('<label>').attr('for', checkBoxId).append(img);
+  var img = $('<img>')
+    .attr('src', item.imageUrl)
+    .addClass('thumb')
+    .hover(function() {
+        zoomImg(this, item.imageUrl);
+      },
+      function() {
+        zoomImg();
+      });
+
+
+
+  var label = $('<label>')
+    .attr('for', checkBoxId)
+    .append(img);
+
 
   return $('<div>').append(checked, label)
     .addClass('media-object pull-left')
@@ -188,7 +202,7 @@ function createTitle(item) {
     .html(createLink(' ' + item.title, item.url)
       .prop('outerHTML'));
 
-  var sku = $('<strong>').text(item.sku).addClass('label');
+  var sku = $('<strong>').text(item.sku).addClass('label copiable');
 
   var div = $('<div>').css('line-height', '30px').append(sku, $title);
 
@@ -223,4 +237,40 @@ function recoverSelectedAttrs() {
     var value = attrs[key];
     $('#label-box').append(createLabel(value, value, key, true));
   });
+}
+
+
+var runLatter;
+
+function zoomImg(element, src) {
+  if (src) {
+    var runnable = function(element, src) {
+      var offset = $(element).offset();
+
+      offset.left += 150;
+      var minTop = 60;
+      var maxTop = 340;
+      offset.top = (offset.top - minTop) < minTop ? minTop : offset.top - minTop;
+      offset.top = offset.top > maxTop ? maxTop : offset.top;
+
+      var $img = $('<img>')
+        .addClass('thumb zoom-img')
+        .offset(offset)
+        .hide()
+        .attr('src', src)
+        .fadeIn();
+
+      $('.window').append($img);
+    };
+
+    runLatter = setTimeout(function() {
+      runnable(element, src);
+    }, 1000);
+
+  } else {
+    clearTimeout(runLatter);
+    $('.zoom-img').fadeOut(200, function() {
+      $(this).remove();
+    });
+  }
 }

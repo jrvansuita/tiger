@@ -1,151 +1,169 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>@import url('./css/publish.css');</style>
-  <style>@import url('./node_modules/emojionearea/dist/emojionearea.min.css');</style>
-  <style>@import url('./node_modules/semantic-ui-calendar/dist/calendar.min.css');</style>
 
-  <script>$.getScript('./js/control/publish-control.js');</script>
-  <script>$.getScript('./node_modules/emojionearea/dist/emojionearea.min.js');</script>
-  <script>$.getScript('./node_modules/semantic-ui-calendar/dist/calendar.min.js');</script>
+  <head>
+    <style>
+      @import url('./css/publish.css');
+    </style>
+    <style>
+      @import url('./node_modules/emojionearea/dist/emojionearea.min.css');
+    </style>
+    <style>
+      @import url('./node_modules/semantic-ui-calendar/dist/calendar.min.css');
+    </style>
 
-</head>
-<body>
+    <script>
+      $.getScript('./js/control/publish-control.js');
+    </script>
+    <script>
+      $.getScript('./node_modules/emojionearea/dist/emojionearea.min.js');
+    </script>
+    <script>
+      $.getScript('./node_modules/semantic-ui-calendar/dist/calendar.min.js');
+    </script>
 
-  <div class="window-frame">
+  </head>
 
-    <div class="fixed-header" style="position:relative">
-      <div class="btn-group">
+  <body>
 
-        <div class="ui compact menu">
-          <div class="ui simple dropdown item">
-            Make Post
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <div class="item" id="post-test">Teste Page</div>
-              <div class="item" id="post-boutique">Boutique Infantil</div>
-            </div>
-          </div>
+    <div class="window-frame">
+
+      <div class="fixed-header" style="position:relative">
+        <div class="btn-group">
+
+          <button class="ui button" id="facebook-post">
+            <i class="facebook icon"></i>
+            Facebook
+          </button>
+
+          <button class="ui  button" id="instagram-post">
+             <i class="instagram icon"></i>
+             Instagram
+           </button>
         </div>
       </div>
-    </div>
 
-    <div class="main">
-      <div>
-        <div class="simple-panel rules" id="schedule-holder">
-          <div class="ui top attached label">SCHEDULE</div>
-          <div class="ui calendar" id="schedule">
-            <div class="ui input action">
-              <input type="text" placeholder="Schedule Date/Time">
-              <button class="ui icon button toggle" id="future-date">
+      <div class="main">
+        <div>
+          <div class="simple-panel rules" id="schedule-holder">
+            <div class="ui top attached label">SCHEDULE</div>
+            <div class="ui calendar" id="schedule">
+              <div class="ui input action">
+                <input type="text" placeholder="Schedule Date/Time" id="schedule-val">
+                <button class="ui icon button toggle" id="future-date">
                 <i class="calendar icon"></i>
               </button>
+              </div>
+
+              <div class="ui pointing label" id="schedule-warn" style="display: none">
+
+              </div>
             </div>
+
           </div>
 
+          <div id="post-pane" class="simple-panel">
+            <div class="post-info" style="visibility: hidden">
+              <img class="img-circle media-object pull-left" id="profile-thumb" width="54" height="54" />
+              <div id="profile-info">
+                <strong class="title" id="profile-name"></strong>
+                <p id="post-date"></p>
+              </div>
+            </div>
+
+            <div>
+              <p id="main-description" class="description-body"> </p>
+
+              <div id="slider">
+
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div id="post-pane" class="simple-panel">
-          <div class="post-info" style="visibility: hidden">
-            <img class="img-circle media-object pull-left"  id="profile-thumb" width="54" height="54"/>
-            <div id="profile-info">
-              <strong class="title" id="profile-name"></strong>
-              <p id="post-date"></p>
-            </div>
-          </div>
+        <div>
+          <div class="simple-panel rules">
 
-          <div>
-            <p id="main-description" class="description-body"> </p>
+            <div class="ui top attached label">DESCRIPTION BUILDER</div>
 
-            <div id="slider">
+            <div class="ui buttons">
 
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="simple-panel rules">
-
-          <div class="ui top attached label" >DESCRIPTION BUILDER</div>
-
-          <div class="ui buttons">
-
-            <button class="ui icon toggle button active"  same="description" id="same-description">
+              <button class="ui icon toggle button active" same="description" id="same-description">
               <i class="asterisk icon"></i>
             </button>
 
-            <button class="ui icon button" id="regenerate">
+              <button class="ui icon button" id="regenerate">
               <i class="refresh icon"></i>
             </button>
 
-            <button class="ui toggle icon button" id="check-in">
+              <button class="ui toggle icon button" id="check-in">
               <i class="marker icon"></i>
             </button>
-          </div>
-
-          <div class="ui form">
-            <div class="field">
-              <textarea rows="3" placeholder="Description" id="description"></textarea>
             </div>
-          </div>
 
-          <div class="ui input">
-            <input type="text" placeholder="Link Holder" id="link-holder">
-          </div>
+            <div class="ui form">
+              <div class="field">
+                <textarea rows="3" placeholder="Description" id="description"></textarea>
+              </div>
+            </div>
+
+            <div class="ui input">
+              <input type="text" placeholder="Link Holder" id="link-holder">
+            </div>
 
 
-          <select id="select-hashtags" multiple="" class="ui search fluid dropdown">
+            <select id="select-hashtags" multiple="" class="ui search fluid dropdown">
 
           </select>
 
 
-        </div>
+          </div>
 
-        <div class="simple-panel rules">
-          <div class="ui top attached label">LINK BUILDER</div>
+          <div class="simple-panel rules">
+            <div class="ui top attached label">LINK BUILDER</div>
 
-          <div class="ui buttons">
+            <div class="ui buttons">
 
-            <button class="ui toggle icon button active"  same="link" id="same-link">
+              <button class="ui toggle icon button active" same="link" id="same-link">
               <i class="asterisk icon"></i>
             </button>
 
-            <button class="ui toggle icon button" id="short-url">
+              <button class="ui toggle icon button" id="short-url">
               <i class="linkify icon"></i>
             </button>
 
-            <button class="ui toggle icon button" id="lab-link">
+              <button class="ui toggle icon button" id="lab-link">
               <i class="lab icon"></i>
             </button>
 
-          </div>
-
-
-          <div class="ui labeled input">
-            <div class="ui label">
-              http://
             </div>
-            <input id="url" type="text" placeholder="Redirect Link">
-          </div>
 
-          <div class="ui input">
-            <input type="text" placeholder="Campaign Source" id="source">
-          </div>
 
-          <div class="ui input">
-            <input type="text" placeholder="Campaign Medium" id="medium">
-          </div>
+            <div class="ui labeled input">
+              <div class="ui label">
+                http://
+              </div>
+              <input id="url" type="text" placeholder="Redirect Link">
+            </div>
 
-          <div class="ui input">
-            <input type="text" placeholder="Campaign Name" id="name">
+            <div class="ui input">
+              <input type="text" placeholder="Campaign Source" id="source">
+            </div>
+
+            <div class="ui input">
+              <input type="text" placeholder="Campaign Medium" id="medium">
+            </div>
+
+            <div class="ui input">
+              <input type="text" placeholder="Campaign Name" id="name">
+            </div>
           </div>
         </div>
+
       </div>
 
+
     </div>
+  </body>
 
-
-  </div>
-</body>
 </html>

@@ -55,10 +55,14 @@ module.exports = {
     post.setSchedule(date);
   },
 
-  makePost: function(fbPage) {
-    post.setPage(fbPage);
+  instaPost: function() {
     post.reorder(Keep.selectedProducts());
-    Facebook.postOnFacebook(post);
+    InstApi.postOnInstagram(post);
+  },
+
+  facePost: function() {
+    post.reorder(Keep.selectedProducts());
+    FaceApi.postOnFacebook(post);
   },
 
   select(sku) {
