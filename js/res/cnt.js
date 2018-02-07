@@ -10,6 +10,7 @@ module.exports = {
   scheduled_on_facebook: 'Scheduled on Facebook',
   published_to_facebook: 'Published on Facebook',
   cant_schedule_on_instagram: "It's not possible to schedule on Instagram.",
+  to_many_items: "Too many items on single post.",
   link_bio: 'Link na Bio 🙌 \n\n.\n.\n.\n.\n.\n.\n\n',
 
 

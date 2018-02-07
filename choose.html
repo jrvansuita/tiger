@@ -1,60 +1,72 @@
 <!DOCTYPE html>
 <html>
-<head>
 
-  <style>@import url('./css/choose.css');</style>
+  <head>
 
-
-  <script>
-  $.getScript('./js/control/choose-control.js');
-  </script>
-
-</head>
-<body>
-
-  <div class="fixed-header">
-
-    <div class="ui icon buttons">
-      <button class="ui button" id="select-all">
-        <i class="checkmark icon"></i>
-      </button>
-      <button class="ui button" id="toggle-all">
-        <i class="random icon"></i>
-      </button>
-    </div>
+    <style>
+      @import url('./css/choose.css');
+    </style>
 
 
-    <div class="btn-group pull-right">
-      <div class="ui compact menu">
-        <div class="ui simple dropdown item">
-          Post
-          <i class="dropdown icon"></i>
-          <div class="menu">
-            <div class="item" id="publish">Build</div>
-            <div class="item" id="auto">Auto</div>
+    <script>
+      $.getScript('./js/control/choose-control.js');
+    </script>
+
+  </head>
+
+  <body>
+
+    <div class="fixed-header">
+
+      <div class="ui icon buttons">
+
+        <button class="ui button" id="select-all">
+          <i class="checkmark icon"></i>
+        </button>
+
+        <button class="ui button" id="toggle-all">
+          <i class="random icon"></i>
+        </button>
+
+        <button class="ui button" id="copy">
+          <i class="copy icon"></i>
+        </button>
+
+      </div>
+
+
+      <div class="btn-group pull-right">
+        <div class="ui compact menu">
+          <div class="ui simple dropdown item">
+            Post
+            <i class="dropdown icon"></i>
+            <div class="menu">
+              <div class="item" id="publish">Build</div>
+              <div class="item" id="auto">Auto</div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
 
-    <div class="ui action input" >
-      <input type="text" placeholder="Search..." id="search">
-      <button class="ui icon button" id="search-button">
+      <div class="ui action input">
+        <input type="text" placeholder="Search..." id="search">
+        <button class="ui icon button" id="search-button">
         <i class="search icon"></i>
       </button>
+      </div>
+
+
+      <div id="label-box">
+
+      </div>
     </div>
 
-
-    <div id="label-box">
-
-    </div>
-  </div>
-
-  <ul class="list-group" id="feed-list">
+    <ul class="list-group" id="feed-list">
 
 
-  </ul>
+    </ul>
 
-</body>
+  </body>
+
 </html>

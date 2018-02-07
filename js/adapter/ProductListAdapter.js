@@ -202,7 +202,11 @@ function createTitle(item) {
     .html(createLink(' ' + item.title, item.url)
       .prop('outerHTML'));
 
-  var sku = $('<strong>').text(item.sku).addClass('label copiable');
+  var sku = $('<strong>').text(item.sku).addClass('label copiable sku')
+    .click(function() {
+      Util.selectContent(this);
+      Util.copySeleted();
+    });
 
   var div = $('<div>').css('line-height', '30px').append(sku, $title);
 

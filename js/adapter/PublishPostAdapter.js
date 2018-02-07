@@ -35,6 +35,10 @@ module.exports = {
 
   },
 
+  getItemsCount: function() {
+    return getItems().length;
+  },
+
   setNewSugested() {
     var s = new RandomDesc();
 

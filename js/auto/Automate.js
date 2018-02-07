@@ -15,43 +15,43 @@
 
 
 
-function sleep (time) {
+function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
 var lastPosition = 0;
 
 module.exports = {
-  autoPost : function(){
+  autoPost: function() {
     lastPosition = 0;
     run();
   }
 };
 
-function checkMenu(callback){
-  if (!$('a.nav-group-item.active').attr('page').contains('choose')){
+function checkMenu(callback) {
+  if (!$('a.nav-group-item.active').attr('page').contains('choose')) {
     $('#choose-product-menu-item').click();
     sleep(1000).then(() => {
       callback();
     });
-  }else{
+  } else {
     callback();
   }
 }
 
-function run(){
+function run() {
 
-  checkMenu(function(){
-    if (isSearching()){
+  checkMenu(function() {
+    if (isSearching()) {
       msg.clear();
 
       prepareList();
 
-      if (gotProducts()){
-        publishClick(function (){
+      if (gotProducts()) {
+        publishClick(function() {
           run();
         });
-      }else{
+      } else {
         msg.sucess(cnt.completed);
       }
     }
@@ -59,10 +59,10 @@ function run(){
 }
 
 
-function isSearching(){
+function isSearching() {
   var nope = $('#search').val() === "" && $('#label-box').children().length == 0;
 
-  if (nope){
+  if (nope) {
     msg.error(cnt.emptySearch);
     return false;
   }
@@ -71,17 +71,17 @@ function isSearching(){
 }
 
 
-function prepareList(){
+function prepareList() {
   //Dischecked any checked
   $('input:checkbox:checked').parent().click();
 
 
 }
 
-function gotProducts(){
+function gotProducts() {
   var postLength = 4;
 
-  for (var i = 0; i < postLength; i++){
+  for (var i = 0; i < postLength; i++) {
     var id = '#check-' + (lastPosition + i);
 
     $(id).parent().click();
@@ -89,18 +89,18 @@ function gotProducts(){
     $('#pane-content').scrollTop(120 * lastPosition);
   }
 
-  lastPosition+= postLength;
+  lastPosition += postLength;
 
   var selected = $('input:checkbox:checked').length > 1;
 
-  if (!selected){
+  if (!selected) {
     $('input:checkbox:checked').click();
   }
 
   return selected;
 }
 
-function publishClick(sucess){
+function publishClick(sucess) {
   sleep(1000).then(() => {
     $('#publish').click();
 
@@ -108,27 +108,27 @@ function publishClick(sucess){
   });
 }
 
-function preparePost(sucess){
+function preparePost(sucess) {
   sleep(1000).then(() => {
-    if (!$('#future-date').hasClass('active')){
+    if (!$('#future-date').hasClass('active')) {
       $('#future-date').click();
     }
 
-    if (!$('#check-in').hasClass('active')){
+    if (!$('#check-in').hasClass('active')) {
       $('#check-in').click();
     }
 
-    if (!$('#lab-link').hasClass('active')){
+    if (!$('#lab-link').hasClass('active')) {
       $('#lab-link').click();
     }
 
     sleep(200).then(() => {
-      if (!$('#short-url').hasClass('active')){
+      if (!$('#short-url').hasClass('active')) {
         $('#short-url').click();
       }
 
       sleep(1000).then(() => {
-        $('#post-boutique').click();
+        $('#facebook-post').click();
         sleep(8000).then(() => {
           sucess();
         });

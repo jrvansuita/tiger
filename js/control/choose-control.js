@@ -7,6 +7,15 @@ $(document).ready(function() {
     $('#select-all').removeClass('active');
   });
 
+  $('#copy').click(function() {
+    var val = '';
+    $(".sku").each(function() {
+      val += '\n' + $(this).text();
+    });
+
+    Util.copySeleted(val);
+  });
+
   //Mark as check
   $('#select-all').click(function() {
     var isSelect = !$(this).hasClass('active');
@@ -48,7 +57,6 @@ $(document).ready(function() {
     $('#search-button').addClass('loading');
     listAdapter.execute($('#search').val(), function() {
       $('#search-button').removeClass('loading');
-      $('.copiable').click(onCopy);
     });
   }
 
@@ -63,9 +71,4 @@ function storeKeepValues() {
 
 function restoreKeepValues() {
   $('#search').val(Keep.lastProductSearch());
-}
-
-function onCopy(e) {
-  Util.selectContent(this);
-  Util.copySeleted();
 }

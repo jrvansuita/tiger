@@ -41,11 +41,11 @@ module.exports = {
   },
 
   shortBuyUrl: function(value) {
-    return _keepStr('short-buy-url', value) == 'true';
+    return _keepStr('short-buy-url', value, 'true') == 'true';
   },
 
   magicLink: function(value) {
-    return _keepStr('magic-link', value) == 'true';
+    return _keepStr('magic-link', value, 'true') == 'true';
   },
 
   futureDate: function(value) {
@@ -69,7 +69,7 @@ module.exports = {
   },
 
   checkIn: function(value) {
-    return _keepStr('check-in', value, true) == 'true';
+    return _keepStr('check-in', value, 'true') == 'true';
   },
 
   lastExchangeFacebookToken(time) {

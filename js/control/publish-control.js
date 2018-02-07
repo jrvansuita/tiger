@@ -49,15 +49,19 @@ function buildTriggers() {
     });
 
   $('#facebook-post').click(function() {
-    adapter.facePost();
+    if (consistItemsCount(adapter.getItemsCount(), 4)) {
+      adapter.facePost();
+    }
   });
 
   $('#instagram-post').click(function() {
-    if ($('#schedule-val').val() !== '') {
-      $('#schedule-warn').text(cnt.cant_schedule_on_instagram).fadeIn();
-    } else {
-      $('#schedule-warn').fadeOut();
-      adapter.instaPost();
+    if (consistItemsCount(adapter.getItemsCount(), 10)) {
+      if ($('#schedule-val').val() !== '') {
+        $('#schedule-warn').text(cnt.cant_schedule_on_instagram).fadeIn();
+      } else {
+        $('#schedule-warn').fadeOut();
+        adapter.instaPost();
+      }
     }
   });
 
@@ -217,4 +221,15 @@ function restoreKeepValues() {
   if (Keep.futureDate()) {
     $('#future-date').click();
   }
+}
+
+
+function consistItemsCount(count, max) {
+  if (count > max) {
+    msg.error(cnt.to_many_items);
+    return false;
+  }
+
+  return true;
+
 }
