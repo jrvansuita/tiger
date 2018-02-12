@@ -49,13 +49,13 @@ function buildTriggers() {
     });
 
   $('#facebook-post').click(function() {
-    if (consistItemsCount(adapter.getItemsCount(), 4)) {
+    if (isLinkOk() && consistItemsCount(adapter.getItemsCount(), 4)) {
       adapter.facePost();
     }
   });
 
   $('#instagram-post').click(function() {
-    if (consistItemsCount(adapter.getItemsCount(), 10)) {
+    if (isLinkOk() && consistItemsCount(adapter.getItemsCount(), 10)) {
       if ($('#schedule-val').val() !== '') {
         $('#schedule-warn').text(cnt.cant_schedule_on_instagram).fadeIn();
       } else {
@@ -131,6 +131,15 @@ function buildTriggers() {
     $(this).toggleClass('active');
 
   });
+}
+
+function isLinkOk() {
+  if ($('#url').val().length === 0) {
+    msg.error(cnt.link_not_defined);
+    return false;
+  }
+
+  return true;
 }
 
 function applyMagicLink(callback) {

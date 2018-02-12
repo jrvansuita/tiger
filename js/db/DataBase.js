@@ -1,13 +1,19 @@
-
 var DataStore = require('nedb');
 
 function getCollection(name, indexes) {
-  var db = new DataStore({ filename:  app.getPath('userData') + name, autoload: true });
+  var path = app.getPath('userData') + name;
+
+  var db = new DataStore({
+    filename: path,
+    autoload: true
+  });
+
+  //console.log(path);
 
   if (indexes)
-  for (var i = 0; i < indexes.length; i++){
-    db.ensureIndex(indexes[i]);
-  }
+    for (var i = 0; i < indexes.length; i++) {
+      db.ensureIndex(indexes[i]);
+    }
 
   db.persistence.compactDatafile();
 
@@ -16,25 +22,39 @@ function getCollection(name, indexes) {
 
 const postsDb = createPostsDb();
 const productsDb = createProductsDb();
+const templatesDb = createTemplatesDb();
 
 function createProductsDb() {
-  return  getCollection('/db/products.data',
-  { fieldName: 'sku', unique: true },
-  { fieldName: 'quantity', unique: false },
-  { fieldName: 'selected', unique: false }
-);
+  return getCollection('/db/products.data', {
+    fieldName: 'sku',
+    unique: true
+  }, {
+    fieldName: 'quantity',
+    unique: false
+  }, {
+    fieldName: 'selected',
+    unique: false
+  });
 }
 
 function createPostsDb() {
-  return  getCollection('/db/posts.data');
+  return getCollection('/db/posts.data');
+}
+
+function createTemplatesDb() {
+  return getCollection('/db/templates.data');
 }
 
 module.exports = {
-  products: function () {
+  products: function() {
     return productsDb;
   },
 
-  posts: function () {
+  posts: function() {
     return postsDb;
+  },
+
+  templates: function() {
+    return templatesDb;
   }
 };

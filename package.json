@@ -23,6 +23,7 @@
     "fb": "^2.0.0",
     "instagram-private-api": "^0.6.7",
     "jquery": "^3.2.1",
+    "mongoose": "^5.0.4",
     "nedb": "^1.8.0",
     "semantic-ui": "^2.2.13",
     "semantic-ui-calendar": "0.0.8",

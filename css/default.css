@@ -157,3 +157,7 @@ a {
 .min-label {
   min-width: 200px;
 }
+
+.emojionearea-editor {
+  font-weight: 100;
+}

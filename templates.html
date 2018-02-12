@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+  <!--
+mlab.com
+jr@boutiqueinfantil.com.br
+jrboutique
+1vansuitaboutique
+
+-->
+
+  <head>
+    <style>
+      @import url('./node_modules/emojionearea/dist/emojionearea.min.css');
+    </style>
+    <script>
+      $.getScript('./node_modules/emojionearea/dist/emojionearea.min.js');
+    </script>
+
+    <style>
+      @import url('./css/templates.css');
+    </style>
+
+    <script>
+      $.getScript('./js/control/templates-control.js');
+    </script>
+  </head>
+
+  <body>
+
+
+    <div class="window-frame">
+
+      <div class="fixed-header" style="position:relative">
+        <div class="btn-group">
+
+
+          <button class="ui labeled icon button" id="update">
+          <i class="cloud download icon"></i>
+          Update Local Templates
+        </button>
+
+        </div>
+      </div>
+
+      <div class="main">
+
+        <div class="simple-panel">
+          <div class="ui top attached label">DESCRIPTIONS</div>
+
+          <div class="ui form">
+            <div class="field">
+              <textarea rows="1" placeholder="Description Template" id="desc"></textarea>
+            </div>
+          </div>
+
+          <button class="ui button" id="desc-save">
+            <i class="save icon"></i>
+             Save
+          </button>
+
+          <div class="ui celled list" id="desc-list"></div>
+        </div>
+
+
+        <div>
+          <div class="simple-panel short">
+            <div class="ui top attached label">LINKS</div>
+
+            <div class="ui form">
+              <div class="field">
+                <textarea rows="1" placeholder="Link Template" id="link"></textarea>
+              </div>
+            </div>
+
+            <button class="ui button" id="link-save">
+            <i class="save icon"></i>
+             Save
+          </button>
+
+            <div class="ui celled list" id="link-list"></div>
+          </div>
+
+          <div class="simple-panel short">
+            <div class="ui top attached label">HASHTAGS</div>
+
+            <div class="ui form">
+              <div class="field">
+                <textarea rows="1" placeholder="Hashtag" id="hashtag"></textarea>
+              </div>
+            </div>
+
+            <button class="ui button" id="hashtag-save">
+            <i class="save icon"></i>
+             Save
+          </button>
+
+            <div class="ui celled list" id="hashtag-list"></div>
+          </div>
+        </div>
+      </div>
+
+
+  </body>
+
+</html>

@@ -1,0 +1,37 @@
+.ui.button {
+  margin-top: 5px;
+}
+
+.emojionearea-editor {
+  min-height: 4em !important;
+}
+
+.content {
+  padding-top: 5px;
+  display: inline-block;
+  padding-bottom: 5px;
+  max-width: 400px;
+}
+
+.del {
+  cursor: pointer;
+  position: relative;
+  top: 5px;
+  padding: 5px;
+}
+
+.loading {
+  display: inline-flex;
+}
+
+.circle.loading.icon {
+  margin-top: 3px;
+}
+
+.item:hover {
+  background-color: rgba(202, 202, 202, 0.14);
+}
+
+.short {
+  max-width: 300px;
+}

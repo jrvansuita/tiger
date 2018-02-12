@@ -31,4 +31,9 @@ module.exports = {
       }
   },
 
+  clear: function(element) {
+    if (element)
+      element.emojioneArea()[0].emojioneArea.setText('');
+  }
+
 };

@@ -3,6 +3,7 @@ module.exports = {
   finished: 'Finished',
   completed: 'Completed',
   allProductsUpdated: 'All products updated.',
+  allTemplatesUpdated: 'All templates updated.',
   emptySearch: 'Not possible with empty search',
   not_products_selected: 'Please, select some products to proceed.',
   link_broken: 'Um ou mais links das imagens não está funcionando (404).',
@@ -11,6 +12,7 @@ module.exports = {
   published_to_facebook: 'Published on Facebook',
   cant_schedule_on_instagram: "It's not possible to schedule on Instagram.",
   to_many_items: "Too many items on single post.",
+  link_not_defined: "Link is not defined.",
   link_bio: 'Link na Bio 🙌 \n\n.\n.\n.\n.\n.\n.\n\n',
 
 

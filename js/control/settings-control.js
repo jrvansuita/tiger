@@ -7,13 +7,8 @@ $(document).ready(function() {
   });
 
   $('#templates').click(function() {
-    msg.loading();
+    require(_jsdir + 'provider/TemplatesProvider.js').updateAll();
   });
-
-  $('#nothing').click(function() {
-    require(_jsdir + 'insta/InstApi.js').teste();
-  });
-
 
   restoreKeepValues();
 });
