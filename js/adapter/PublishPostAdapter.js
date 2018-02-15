@@ -1,15 +1,16 @@
 var Post = require(_jsdir + 'bean/Post.js');
 var PostItem = require(_jsdir + 'bean/PostItem.js');
 var Sortable = require('sortablejs');
-var Keep = require(_jsdir + 'prefs/Keep.js');
 const Consts = require(_jsdir + 'res/consts.js');
 const RandomDesc = require(_jsdir + 'bean/RandomDesc.js');
 var Emoji = require(_jsdir + 'less/emoji.js');
 var MagicLink = require(_jsdir + 'less/magic-link.js');
-const db = require(_jsdir + 'db/DataBase.js');
+var GroupAnalysis = require(_jsdir + 'less/group-analysis.js');
+
 
 var post;
 var selected = 0;
+var criteria;
 
 var same = {
   link: true,
@@ -33,6 +34,7 @@ module.exports = {
       post.addItem(new PostItem(product, sugested));
     });
 
+    criteria = GroupAnalysis.analyse(post.getItems());
   },
 
   getItemsCount: function() {
@@ -153,7 +155,7 @@ module.exports = {
   },
 
   labLink: function(callback) {
-    MagicLink.build(getItems(), callback);
+    MagicLink.build(criteria, callback);
   },
 
   handleShortLink: function(doShort) {

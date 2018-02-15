@@ -4,7 +4,7 @@
   "description": "A sotfware that will post automatic on my facebook's page",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron . --icon='./assets/icons/icon.png'",
     "win32": "electron-packager . --platform=win32 --arch=x64 --icon='./assets/icons/icon.png' --out=../ElectronBuilds --overwrite",
     "mac": "electron-packager . --platform=darwin --arch=x64 --icon='./assets/icons/icon.icns' --out=../ElectronBuilds --overwrite"
   },

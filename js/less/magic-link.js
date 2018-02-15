@@ -5,42 +5,21 @@ var link;
 
 module.exports = {
 
-  build: function(items, callback) {
+  build: function(criteria, callback) {
     link = weblink;
 
-    var sameBrand = true;
-    var brand = items[0].product.brand;
-    var sameGender = true;
-    var gender = items[0].product.gender;
-
-    var categories = [];
-
-    items.forEach(function(item, i) {
-
-      if (brand != item.product.brand) {
-        sameBrand = false;
-        brand = item.product.brand;
-      }
-
-      if (gender != item.product.gender) {
-        sameGender = false;
-        gender = item.product.gender;
-      }
-
-      categories.push(item.product.category);
-    });
-
-    if (sameBrand) {
-      brand = fmt(Util.removerAcentos(brand).toUpperCase());
+    console.log(criteria);
+    if (criteria.hasSameBrand()) {
+      fmt(Util.removerAcentos(criteria.getBrands()[0]).toUpperCase());
     } else {
       fmt('products');
     }
 
-    if (sameGender) {
-      fmt(genderUrl(gender));
+    if (criteria.hasSameGender()) {
+      fmt(genderUrl(criteria.getGenders()[0]));
     }
 
-    callback(link + categoryFilter(categories), brand);
+    callback(link + categoryFilter(criteria.getCategories()), criteria);
   },
 
 };
@@ -49,10 +28,7 @@ function fmt(s) {
   var val = s.replace(/ /g, '-');
 
   link += s ? '/' + val : '';
-
-  return val;
 }
-
 
 
 function genderUrl(s) {
@@ -96,6 +72,12 @@ function categoryFilter(categories) {
       cat.push('macacao');
     } else if (is(item, 'sapato')) {
       cat.push('tenis+sandalia+sapatilha');
+    } else if (is(item, 'calçados')) {
+      cat.push('sandalia');
+    } else if (is(item, 'sapatilhas')) {
+      cat.push('sapatilha');
+    } else if (is(item, 'tenis')) {
+      cat.push('tenis');
     } else {
       //cat.push(item);
     }

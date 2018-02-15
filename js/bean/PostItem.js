@@ -1,50 +1,49 @@
 const Util = require(_jsdir + 'util/utils.js');
 const Consts = require(_jsdir + 'res/consts.js');
 
-module.exports = class PostItem{
+module.exports = class PostItem {
 
   constructor(product, sugested) {
     this.product = product;
     this.setSugested(sugested);
   }
 
-  setSugested(sugested){
+  setSugested(sugested) {
     this.descriptionPattern = sugested.getDescription();
     this.buyLinkPattern = sugested.getBuyLinkHolder();
     this.hashtags = sugested.getHashTags();
   }
 
-
-  getPatternDescription(){
+  getPatternDescription() {
     return this.descriptionPattern;
   }
 
-  setPatternsDescription(pattern){
+  setPatternsDescription(pattern) {
     this.descriptionPattern = pattern;
   }
 
-  getPatternBuyLink(){
+  getPatternBuyLink() {
     return this.buyLinkPattern;
   }
 
-  setPatternBuyLink(pattern){
+  setPatternBuyLink(pattern) {
     this.buyLinkPattern = pattern;
   }
 
-  getHashTags(){
+  getHashTags() {
     return this.applyHashHolders(this.hashtags);
   }
 
-  applyHashHolders(s){
-    return s.replaceAll('{.brand}', this.product.brand.replace(/ /g,''))
-    .replaceAll('{.category}', this.product.category.replace(/ /g,''));
+  applyHashHolders(s) {
+    return s.replaceAll('{.brand}', this.product.brand.replace(/ /g, ''))
+      .replaceAll('{.category}', this.product.category.replace(/ /g, ''));
   }
 
-  getHashTagsArray(){
+  getHashTagsArray() {
     var hashtags = [];
 
-    this.getHashTags().split(' ').forEach(function(item, index){
-      if (item){
+    this.getHashTags().split(' ').forEach(function(item, index) {
+      if (item) {
         hashtags.push(item.replace('#', '').trim());
       }
     });
@@ -52,7 +51,7 @@ module.exports = class PostItem{
     return hashtags;
   }
 
-  setHashTags(pattern){
+  setHashTags(pattern) {
     this.hashtags = pattern;
   }
 
@@ -60,29 +59,29 @@ module.exports = class PostItem{
     return this.applyDescHolders(this.getPatternDescription());
   }
 
-  applyDescHolders(s){
+  applyDescHolders(s) {
     return s.replaceAll('{.price}', Util.money(this.product.price))
-    .replaceAll('{.brand}', this.product.brand)
-    .replaceAll('{.gender}', Util.gender(this.product.gender))
-    .replaceAll('{.color}', this.product.color)
-    .replaceAll('{.category}', this.product.category);
+      .replaceAll('{.brand}', this.product.brand)
+      .replaceAll('{.gender}', Util.gender(this.product.gender))
+      .replaceAll('{.color}', this.product.color)
+      .replaceAll('{.category}', this.product.category);
   }
 
-  getDescription(){
+  getDescription() {
     return this.description;
   }
 
-  setShortBuyLink(short){
+  setShortBuyLink(short) {
     this.shortBuyLink = short;
   }
 
-  getShortBuyLink(){
+  getShortBuyLink() {
     return this.shortBuyLink;
   }
 
 
 
-  setBuyLink(buyLink, source, medium, name){
+  setBuyLink(buyLink, source, medium, name) {
     this.buyLink = buyLink;
     this.campaignSource = source;
     this.campaignMedium = medium;
@@ -93,40 +92,40 @@ module.exports = class PostItem{
   //   return this.buyLink;
   // }
 
-  getCampaignBuyLink(){
-    return this.getShortBuyLink() ? this.getShortBuyLink() :  Util.buildTrackableUrl(this.buyLink, this.campaignSource, this.campaignMedium, this.campaignName);
+  getCampaignBuyLink() {
+    return this.getShortBuyLink() ? this.getShortBuyLink() : Util.buildTrackableUrl(this.buyLink, this.campaignSource, this.campaignMedium, this.campaignName);
   }
 
-  getBuildedBuyLink(){
+  getBuildedBuyLink() {
     return this.getPatternBuyLink().replace('{.link}', this.getCampaignBuyLink());
   }
 
-  getBuildedCaption(){
+  getBuildedCaption() {
     return this.getBuildedDescription() + '\n\n' +
-    this.getBuildedBuyLink() + '\n\n' +
-    this.getHashTags();
+      this.getBuildedBuyLink() + '\n\n' +
+      this.getHashTags();
   }
 
-  getBuyLink(){
+  getBuyLink() {
     return this.buyLink ? this.buyLink : '';
   }
 
-  getCampaignSource(){
+  getCampaignSource() {
     return this.campaignSource ? this.campaignSource : '';
   }
 
-  getCampaignMedium(){
+  getCampaignMedium() {
     return this.campaignMedium ? this.campaignMedium : '';
   }
 
-  getCampaignName(){
+  getCampaignName() {
     return this.campaignName ? this.campaignName : '';
   }
 
 
   /** Build object for facebook Upload **/
 
-  assertFacebook(){
+  assertFacebook() {
     var caption = this.getBuildedCaption();
     var productImage = this.product.imageUrl;
 

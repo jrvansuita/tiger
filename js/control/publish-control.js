@@ -145,11 +145,11 @@ function isLinkOk() {
 function applyMagicLink(callback) {
   $('#lab-link').addClass('active');
 
-  adapter.labLink(function(newLink, brand) {
+  adapter.labLink(function(newLink, criteria) {
     $('#url').val(newLink);
 
-    if (brand) {
-      $('#name').val(brand.toLowerCase());
+    if (criteria.hasSameBrand()) {
+      $('#name').val(criteria.getBrands()[0].toLowerCase());
     }
 
     onBuyLinkChanged();
