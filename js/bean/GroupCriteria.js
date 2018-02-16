@@ -68,4 +68,22 @@ module.exports = class GroupCreteria {
       return key;
     });
   }
+
+
+  matching(is) {
+    var attrs = Object.keys(this).map(function(key) {
+      return key;
+    });
+
+    var sames = [];
+
+    for (var i = 0; i < attrs.length; i++) {
+      var item = attrs[i];
+      if (this.hasSame(this[item]) == is) {
+        sames.push(item);
+      }
+    }
+
+    return sames;
+  }
 };

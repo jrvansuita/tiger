@@ -11,6 +11,9 @@ module.exports = {
     return (Math.random() * (max - min) + min).toFixed(4);
   },
 
+  randItem: function(list) {
+    return list[this.rand(list.length - 1, 0)];
+  },
 
   money: function(val) {
     return 'R$ ' + parseFloat(val).toFixed(2).toString().replace('.', ',');

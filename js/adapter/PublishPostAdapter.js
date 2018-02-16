@@ -6,6 +6,7 @@ const RandomDesc = require(_jsdir + 'bean/RandomDesc.js');
 var Emoji = require(_jsdir + 'less/emoji.js');
 var MagicLink = require(_jsdir + 'less/magic-link.js');
 var GroupAnalysis = require(_jsdir + 'less/group-analysis.js');
+var TemplatesProvider = require(_jsdir + 'provider/TemplatesProvider.js');
 
 
 var post;
@@ -27,6 +28,7 @@ function getItems() {
 
 module.exports = {
   init: function(products) {
+
     var sugested = new RandomDesc();
     post = new Post();
 
@@ -35,6 +37,8 @@ module.exports = {
     });
 
     criteria = GroupAnalysis.analyse(post.getItems());
+
+    TemplatesProvider.find(criteria);
   },
 
   getItemsCount: function() {

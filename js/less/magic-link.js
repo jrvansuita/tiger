@@ -8,7 +8,6 @@ module.exports = {
   build: function(criteria, callback) {
     link = weblink;
 
-    console.log(criteria);
     if (criteria.hasSameBrand()) {
       fmt(Util.removerAcentos(criteria.getBrands()[0]).toUpperCase());
     } else {
