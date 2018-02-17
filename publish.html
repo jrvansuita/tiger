@@ -28,7 +28,7 @@
 
     <div class="window-frame">
 
-      <div class="fixed-header" style="position:relative">
+      <div class="fixed-header">
         <div class="btn-group">
 
           <button class="ui button" id="facebook-post">
@@ -46,28 +46,7 @@
       <div class="main">
         <div>
 
-
-          <div id="post-pane" class="simple-panel">
-            <div class="post-info" style="visibility: hidden">
-              <img class="img-circle media-object pull-left" id="profile-thumb" width="54" height="54" />
-              <div id="profile-info">
-                <strong class="title" id="profile-name"></strong>
-                <p id="post-date"></p>
-              </div>
-            </div>
-
-            <div>
-              <p id="main-description" class="description-body"> </p>
-
-              <div id="slider">
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="simple-panel rules" id="schedule-holder">
+          <div class="simple-panel" id="schedule-holder">
             <div class="ui top attached label">SCHEDULE</div>
             <div class="ui calendar" id="schedule">
               <div class="ui input action">
@@ -84,6 +63,45 @@
 
           </div>
 
+
+          <div id="post-pane" class="simple-panel">
+
+
+            <div class="post-info">
+              <img class="img-circle media-object pull-left" id="profile-thumb" width="54" height="54" />
+
+              <div id="profile-info">
+
+                <div id="profile-loading-holder">
+                  <div class="animated-background hoder-row1"></div>
+                  <div class="animated-background hoder-row2"></div>
+                </div>
+
+                <strong class="title" id="profile-name"></strong>
+                <p id="post-date"></p>
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <p id="main-description" class="description-body"> </p>
+
+                <div id="description-loading-holder">
+                  <div class="animated-background hoder-row1"></div>
+                  <div class="animated-background hoder-row2"></div>
+                  <div class="animated-background hoder-row3"></div>
+                  <div class="animated-background hoder-row4"></div>
+                </div>
+              </div>
+
+              <div id="slider">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
           <div class="simple-panel rules">
 
             <div class="ui top attached label">DESCRIPTION BUILDER</div>

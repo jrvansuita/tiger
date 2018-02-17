@@ -3,9 +3,8 @@ const Consts = require(_jsdir + 'res/consts.js');
 
 module.exports = class PostItem {
 
-  constructor(product, sugested) {
+  constructor(product) {
     this.product = product;
-    this.setSugested(sugested);
   }
 
   setSugested(sugested) {

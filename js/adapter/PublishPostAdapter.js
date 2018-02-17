@@ -1,8 +1,10 @@
+//require(_jsdir + 'db/DataStore.js');
+const db = require(_jsdir + 'db/DataBase.js');
+
 var Post = require(_jsdir + 'bean/Post.js');
 var PostItem = require(_jsdir + 'bean/PostItem.js');
 var Sortable = require('sortablejs');
 const Consts = require(_jsdir + 'res/consts.js');
-const RandomDesc = require(_jsdir + 'bean/RandomDesc.js');
 var Emoji = require(_jsdir + 'less/emoji.js');
 var MagicLink = require(_jsdir + 'less/magic-link.js');
 var GroupAnalysis = require(_jsdir + 'less/group-analysis.js');
@@ -27,18 +29,22 @@ function getItems() {
 }
 
 module.exports = {
-  init: function(products) {
-
-    var sugested = new RandomDesc();
+  init: function(products, completed) {
     post = new Post();
 
-    products.forEach(function(product, index) {
-      post.addItem(new PostItem(product, sugested));
+    criteria = GroupAnalysis.analyse(products);
+
+    products.forEach(function(product) {
+      post.addItem(new PostItem(product));
     });
 
-    criteria = GroupAnalysis.analyse(post.getItems());
+    TemplatesProvider.find(criteria, function(suggested) {
+      getItems().forEach(function(item) {
+        item.setSugested(suggested);
+      });
 
-    TemplatesProvider.find(criteria);
+      completed();
+    });
   },
 
   getItemsCount: function() {
@@ -46,18 +52,22 @@ module.exports = {
   },
 
   setNewSugested() {
-    var s = new RandomDesc();
+    $('#regenerate').addClass('loading');
 
-    if (same.description) {
-      getItems().forEach(function(item, index) {
-        item.setSugested(s);
-      });
-    } else {
-      getSelected().setSugested(s);
-    }
+    TemplatesProvider.find(criteria, function(suggested) {
 
-    updateDescriptionViews();
-    updatePost();
+      if (same.description) {
+        getItems().forEach(function(item, index) {
+          item.setSugested(suggested);
+        });
+      } else {
+        getSelected().setSugested(suggested);
+      }
+
+      updateDescriptionViews();
+      updatePost();
+      $('#regenerate').removeClass('loading');
+    });
   },
 
 
@@ -104,7 +114,7 @@ module.exports = {
     });
 
     Sortable.create(slider[0], {
-      animation: 150,
+      animation: 250,
       forceFallback: true,
       store: {
         get: function(sortable) {

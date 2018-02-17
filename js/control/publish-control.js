@@ -21,19 +21,18 @@ $(document).ready(function() {
   //Find products from selected array
   provider.findSkus(Keep.selectedProducts(), function(data) {
     products = data;
-    adapter.init(products);
-    adapter.buildGallery();
 
-    //onClear();
+    adapter.init(products, function() {
+      buildTriggers();
 
-    buildTriggers();
-    loadProfileInfo();
-
-    setTimeout(function() {
       adapter.select(products[0].sku);
-
       restoreKeepValues();
-    }, 100);
+
+      $('#description-loading-holder').fadeOut(200);
+    });
+
+    adapter.buildGallery();
+    loadProfileInfo();
   });
 });
 
@@ -152,6 +151,7 @@ function applyMagicLink(callback) {
       $('#name').val(criteria.getBrands()[0].toLowerCase());
     }
 
+
     onBuyLinkChanged();
     onDoShortLink(false);
 
@@ -165,6 +165,8 @@ function applyMagicLink(callback) {
 function onDoShortLink(doShort) {
   $('#short-url').toggleClass('active', doShort);
 
+  console.log('Passou ' + doShort + ' ' + $('#short-url').hasClass('active'));
+
   if ($('#url').val()) {
     adapter.handleShortLink(doShort);
   }
@@ -172,9 +174,10 @@ function onDoShortLink(doShort) {
 
 function loadProfileInfo() {
   InstApi.getProfile(function(profile) {
+    $('#profile-loading-holder').remove();
+
     $('#profile-thumb').attr('src', profile.pic);
     $('#profile-name').text(profile.name);
-    $('.post-info').stop().css('visibility', 'visible').fadeIn(300);
     $('#post-date').text(Util.longDate(new Date()));
   });
 }
@@ -209,12 +212,10 @@ function restoreKeepValues() {
   $('#medium').val(Keep.campaignMedium());
   $('#name').val(Keep.campaignName());
 
-  onBuyLinkChanged();
-
   if (Keep.magicLink()) {
     applyMagicLink(function() {
       if (Keep.shortBuyUrl()) {
-        $('#short-url').click();
+        onDoShortLink(true);
       }
     });
   } else {

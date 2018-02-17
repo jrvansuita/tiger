@@ -4,6 +4,8 @@ const cnt = require(_jsdir + 'res/cnt.js');
 var tinycolor = require('tinycolor2');
 var Keep = require(_jsdir + 'prefs/Keep.js');
 
+
+
 module.exports = {
   init: function() {
     productsProvider.init();
@@ -228,6 +230,8 @@ function toggleChecked(index, check) {
     $item.toggleClass('checked', check);
     $glyph.attr('checked', check);
   }
+
+  showSelectionCount();
 }
 
 function createLink(label, url) {
@@ -277,4 +281,9 @@ function zoomImg(element, src) {
       $(this).remove();
     });
   }
+}
+
+function showSelectionCount() {
+  $('#selected-count').toggle($('.checked').length > 0);
+  $('#selected-count').text($('.checked').length);
 }

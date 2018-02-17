@@ -20,7 +20,7 @@ function prepareList(valName) {
   TemplatesMDb.find({
     type: valName
   }, function(err, docs) {
-    renderItens(listName, docs);
+    renderItens(listName, valName, docs);
     hideListLoading(listName);
   });
 
@@ -32,7 +32,7 @@ function prepareList(valName) {
       if (err) console.log(err);
     });
 
-    addItemList(listName, $('#' + valName).val());
+    addItemList(listName, valName, $('#' + valName).val());
     Emoji.clear($('#' + valName));
   });
 }
@@ -49,13 +49,13 @@ function hideListLoading(listName) {
   $('#' + listName + '>.loading').remove();
 }
 
-function renderItens(listName, docs) {
+function renderItens(listName, valName, docs) {
   docs.forEach(function(doc) {
-    addItemList(listName, doc.item);
+    addItemList(listName, valName, doc.item);
   });
 }
 
-function addItemList(listName, value) {
+function addItemList(listName, valName, value) {
   var p = $('<p>').addClass('description-body').append(value);
   var content = $('<div>').addClass('content').append(p);
   var del = $('<i>').addClass('remove grey icon pull-right del').click(function() {
@@ -70,6 +70,11 @@ function addItemList(listName, value) {
   });
 
   var item = $('<div>').addClass('item').append(content, del).hide();
+
+
+  item.click(function() {
+    Emoji.text($('#' + valName), value);
+  });
 
   $('#' + listName).prepend(item);
   item.fadeIn('slow');

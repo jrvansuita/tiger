@@ -15,8 +15,16 @@ a, img {
 }
 
 .main {
+  padding-top: 50px;
   position: relative;
   display: -webkit-box;
+}
+
+.no-padding {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .btn-group {
@@ -24,6 +32,7 @@ a, img {
 }
 
 .img-circle {
+  background-color: #c0c0c0;
   border: 1px solid #d5d3d5 !important;
 }
 
@@ -160,4 +169,12 @@ a {
 
 .emojionearea-editor {
   font-weight: 100;
+}
+
+.floating {
+  width: 22px;
+  padding: 3px 0px 0px 0px !important;
+  text-align: center;
+  height: 18px;
+  top: -5px !important;
 }

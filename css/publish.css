@@ -99,3 +99,55 @@ b {
 .button>i {
   cursor: pointer;
 }
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0
+  }
+  100% {
+    background-position: 468px 0
+  }
+}
+
+#description-loading-holder {
+  margin-bottom: 12px;
+}
+
+.hoder-row1 {
+  width: 50%
+}
+
+.hoder-row2 {
+  width: 100%
+}
+
+.hoder-row3 {
+  width: 70%
+}
+
+.hoder-row4 {
+  width: 60%
+}
+
+.animated-background {
+  margin-top: 10px;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+  background-size: 800px 104px;
+  height: 12px;
+  position: relative;
+}
+
+#profile-loading-holder {
+  width: 200px;
+  height: fill-content;
+}
+
+#post-pane {
+  min-height: 100px;
+}
