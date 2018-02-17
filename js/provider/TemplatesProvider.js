@@ -42,16 +42,22 @@ function callCompleted() {
 
 
 function findHashtags(criteria, callback) {
+  var notIncluded = getNotIncludedRegexQuery(criteria);
+
   var select = {
     $and: [{
       type: 'hashtag',
     }]
   };
 
+  if (notIncluded) {
+    select.$and.push(notIncluded);
+  }
+
   TemplatesMDb.find(select, function(err, docs) {
     var hashtagsStr = '#BoutiqueInfantil';
     var exists = [];
-    var maxTags = 3;
+    var maxTags = 4;
 
     do {
       var tag = Util.randItem(docs).item;
@@ -60,15 +66,7 @@ function findHashtags(criteria, callback) {
         hashtagsStr += ' #' + tag;
         exists[tag] = true;
       }
-    } while (Object.keys(exists).length < 2);
-
-    if (criteria.hasSameBrand()) {
-      hashtagsStr += ' #' + criteria.getBrands()[0].replace(/\s/g, '');
-    }
-
-    if (criteria.hasSameCategory()) {
-      hashtagsStr += ' #' + criteria.getCategories()[0].replace(/\s/g, '');
-    }
+    } while (Object.keys(exists).length < maxTags);
 
     callback(hashtagsStr);
   });
@@ -92,9 +90,7 @@ function findLinkHolder(criteria, callback) {
 }
 
 function findDescrition(criteria, callback) {
-  var query = (Object.values(criteria.matching(false)).map(function(s) {
-    return '{.' + s + '}';
-  }).join('|'));
+  var notIncluded = getNotIncludedRegexQuery(criteria);
 
   var select = {
     $and: [{
@@ -102,17 +98,31 @@ function findDescrition(criteria, callback) {
     }]
   };
 
-  if (query) {
-    select.$and.push({
-      item: {
-        $not: new RegExp('(' + query + ')')
-      }
-    });
+  if (notIncluded) {
+    select.$and.push(notIncluded);
   }
 
   TemplatesMDb.find(select, function(err, docs) {
     callback(Util.randItem(docs).item);
   });
+}
+
+function getNotIncludedRegexQuery(criteria) {
+
+  var query = (Object.values(criteria.matching(false)).map(function(s) {
+    return '{.' + s + '}';
+  }).join('|'));
+
+
+  if (query) {
+    return {
+      item: {
+        $not: new RegExp('(' + query + ')')
+      }
+    };
+  } else {
+    return undefined;
+  }
 }
 
 

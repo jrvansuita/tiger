@@ -12,7 +12,7 @@ module.exports = {
   },
 
   randItem: function(list) {
-    return list[this.rand(list.length - 1, 0)];
+    return list[this.rand(list.length)];
   },
 
   money: function(val) {

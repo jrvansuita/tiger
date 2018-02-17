@@ -14,10 +14,15 @@ a, img {
   cursor: copy !important;
 }
 
+.window-frame {
+  height: 100%;
+}
+
 .main {
   padding-top: 50px;
   position: relative;
   display: -webkit-box;
+  height: 100%;
 }
 
 .no-padding {
@@ -171,7 +176,7 @@ a {
   font-weight: 100;
 }
 
-.floating {
+.mini-bagde {
   width: 22px;
   padding: 3px 0px 0px 0px !important;
   text-align: center;

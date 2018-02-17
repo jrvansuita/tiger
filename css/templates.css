@@ -10,7 +10,7 @@
   padding-top: 5px;
   display: inline-block;
   padding-bottom: 5px;
-  max-width: 400px;
+  max-width: 380px;
 }
 
 .del {
@@ -33,5 +33,19 @@
 }
 
 .short {
-  max-width: 300px;
+  max-width: 250px;
+}
+
+.list {
+  overflow: auto;
+  overflow-x: hidden;
+  height: 82%;
+}
+
+.main {
+  height: 98%;
+}
+
+.pane {
+  overflow: hidden;
 }

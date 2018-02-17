@@ -3,82 +3,136 @@ var MongoDb = require(_jsdir + 'mongoose/MongoDb.js');
 
 $(document).ready(function() {
 
-  prepareList('desc');
-  prepareList('link');
-  prepareList('hashtag');
+  new ListBuilder('desc').addVars(['{.brand}', '{.color}', '{.category}', '{.gender}', '{.price}']).build();
+  new ListBuilder('link').addVars(['{.link}']).build();
+  new ListBuilder('hashtag').addVars(['{.category}', '{.brand}']).build();
 
   restoreKeepValues();
 });
 
-function prepareList(valName) {
-  var listName = valName + '-list';
-  var saveName = valName + '-save';
 
-  Emoji.build($('#' + valName));
 
-  showListLoading(listName);
-  TemplatesMDb.find({
-    type: valName
-  }, function(err, docs) {
-    renderItens(listName, valName, docs);
-    hideListLoading(listName);
-  });
+var ListBuilder = class ListBuilder {
 
-  $('#' + saveName).click(function() {
-    TemplatesMDb({
-      item: $('#' + valName).val(),
-      type: valName
-    }).save(function(err) {
-      if (err) console.log(err);
+  constructor(name) {
+    this.name = name;
+    this.input = $('#' + name);
+    this.list = $('#' + name + '-list');
+    this.save = $('#' + name + '-save');
+    this.varsMenu = $('#' + name + '-vars');
+    this.varBt = $('#' + name + '-vars-bt');
+  }
+
+  addVars(arr) {
+    this.vars = arr;
+
+    return this;
+  }
+
+  build() {
+    Emoji.build(this.input);
+
+    this.showListLoading();
+    this.spawVarsOptions();
+
+    var _self = this;
+
+    this.varBt.click(function() {
+      _self.varsMenu.toggle();
     });
-
-    addItemList(listName, valName, $('#' + valName).val());
-    Emoji.clear($('#' + valName));
-  });
-}
-
-function showListLoading(listName) {
-  var i = $('<i>').addClass('notched circle loading icon');
-  var l = $('<label>').text('Loading');
-  var div = $('<div>').addClass('loading').append(i, l);
-
-  $('#' + listName).append(div);
-}
-
-function hideListLoading(listName) {
-  $('#' + listName + '>.loading').remove();
-}
-
-function renderItens(listName, valName, docs) {
-  docs.forEach(function(doc) {
-    addItemList(listName, valName, doc.item);
-  });
-}
-
-function addItemList(listName, valName, value) {
-  var p = $('<p>').addClass('description-body').append(value);
-  var content = $('<div>').addClass('content').append(p);
-  var del = $('<i>').addClass('remove grey icon pull-right del').click(function() {
 
     TemplatesMDb.find({
-      item: value
-    }).remove(function() {});
-
-    $(this).parent().fadeOut(200, function() {
-      $(this).remove();
+      type: this.name
+    }, function(err, docs) {
+      _self.renderItens(docs);
+      _self.hideListLoading();
     });
-  });
 
-  var item = $('<div>').addClass('item').append(content, del).hide();
+    this.save.click({
+      _self: _self
+    }, function() {
+
+      TemplatesMDb({
+        item: _self.input.val(),
+        type: _self.name
+      }).save(function(err) {
+        if (err) console.log(err);
+      });
+
+      _self.addItemList(_self.input.val());
+      Emoji.clear(_self.input);
+    });
+  }
 
 
-  item.click(function() {
-    Emoji.text($('#' + valName), value);
-  });
+  showListLoading() {
+    var i = $('<i>').addClass('notched circle loading icon');
+    var l = $('<label>').text('Loading');
+    var div = $('<div>').addClass('loading').append(i, l);
 
-  $('#' + listName).prepend(item);
-  item.fadeIn('slow');
+    this.list.append(div);
+  }
+
+  renderItens(docs) {
+    for (var i = 0; i < docs.length; i++) {
+      this.addItemList(docs[i].item);
+    }
+  }
+
+  addItemList(value) {
+    var _self = this;
+
+    var p = $('<p>').addClass('description-body').append(value);
+    var content = $('<div>').addClass('content').append(p);
+    var del = $('<i>').addClass('remove grey icon pull-right del').click(function() {
+
+      TemplatesMDb.find({
+        item: value,
+        type: _self.name
+      }).remove(function() {});
+
+      $(this).parent().fadeOut(200, function() {
+        $(this).remove();
+      });
+    });
+
+    var item = $('<div>').addClass('item').append(content, del)
+      .hide();
+
+    content.click(function() {
+      Emoji.text(_self.input, value);
+      return true;
+    });
+
+    this.list.prepend(item);
+    item.fadeIn('slow');
+  }
+
+  hideListLoading() {
+    $('#' + this.list.attr('id') + '>.loading').remove();
+  }
+
+  spawVarsOptions() {
+    var _self = this;
+    if (this.vars) {
+      for (var i = 0; i < this.vars.length; i++) {
+        var item = $('<div>').addClass('item').append(this.vars[i]);
+
+        item.click(function() {
+          console.log(_self.input.val());
+          Emoji.text(_self.input, _self.input.val() + $(this).text());
+        });
+
+        this.varsMenu.append(item);
+      }
+    }
+  }
+
 }
+
+
+
+
 
 function storeKeepValues() {
 
