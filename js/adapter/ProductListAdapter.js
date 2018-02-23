@@ -241,10 +241,11 @@ function createLink(label, url) {
 function recoverSelectedAttrs() {
   var attrs = Keep.searchAttrs();
 
-  Object.keys(attrs).forEach(function(key, index) {
-    var value = attrs[key];
-    $('#label-box').append(createLabel(value, value, key, true));
-  });
+  if (attrs)
+    Object.keys(attrs).forEach(function(key, index) {
+      var value = attrs[key];
+      $('#label-box').append(createLabel(value, value, key, true));
+    });
 }
 
 
