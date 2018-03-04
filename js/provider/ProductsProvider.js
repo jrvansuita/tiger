@@ -30,6 +30,11 @@ module.exports = {
       msg.loading();
 
       var storage = db.products();
+      //Remove all products first
+      storage.remove({}, {
+        multi: true
+      });
+
       var items = xml.getElementsByTagName('item');
 
       for (var i = 0; i < items.length; i++) {
