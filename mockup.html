@@ -23,6 +23,7 @@
     var productImgUrl;
     var discount;
     var fontColor;
+    var fontShadowColor;
 
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
@@ -72,6 +73,10 @@
       //Get the font color by request query
       fontColor = getParamByName('fontColor');
       fontColor = fontColor ? '#' + fontColor : '';
+
+      //Get the font shaodw color by request query
+      fontShadowColor = getParamByName('fontShadowColor');
+      fontShadowColor = fontShadowColor ? '#' + fontShadowColor : '';
     }
 
     //Filling canvas with white background
@@ -96,6 +101,7 @@
       context.font = "bold 50pt " + currentFont;
       context.fillStyle = getFontColor();
       var bottomPriceMargin = 30;
+      applyFontShadow(context);
       context.fillText(price, leftPriceMargin, canvas.height - bottomPriceMargin);
 
       //Placing the product Price
@@ -103,6 +109,7 @@
         context.font = "bold 20pt " + currentFont;
         context.fillStyle = getFontColor();
         var bottomPriceMargin = 95;
+        applyFontShadow(context);
         context.fillText(priceX, leftPriceMargin + 5, canvas.height - bottomPriceMargin);
       }
     }
@@ -134,6 +141,7 @@
         var rightMargin = 100;
         var topMargin = 100;
 
+        //Circle for the discount
         context.beginPath();
         context.arc(canvas.width - rightMargin, topMargin, 65, 0, 2 * Math.PI, false);
         context.fillStyle = getBarBackgroundColor();
@@ -146,7 +154,7 @@
         rightMargin += 58;
         context.font = "bold 35pt " + currentFont;
         context.fillStyle = getFontColor();
-        context.shadowColor = '#FFF';
+        applyFontShadow(context);
         context.fillText(discount, canvas.width - rightMargin, topMargin + 13);
       }
     }
@@ -170,6 +178,22 @@
       }
 
       return fontColor;
+    }
+
+    function getFontShadowColor() {
+      if (!fontShadowColor) {
+        var c = tinycolor(getFontColor());
+        fontShadowColor = c.getBrightness() > 200 ? 'black' : 'white';
+      }
+
+      return fontShadowColor;
+    }
+
+    function applyFontShadow(context) {
+      context.shadowColor = getFontShadowColor();
+      context.shadowBlur = 5;
+      context.shadowOffsetX = 1;
+      context.shadowOffsetY = 1;
     }
 
     //Dinamic download the jpeg

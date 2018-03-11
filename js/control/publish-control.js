@@ -151,7 +151,6 @@ function applyMagicLink(callback) {
       $('#name').val(criteria.getBrands()[0].toLowerCase());
     }
 
-
     onBuyLinkChanged();
     onDoShortLink(false);
 
@@ -195,7 +194,6 @@ function onDescriptionChanged() {
 }
 
 function storeKeepValues() {
-
   Keep.buyUrl($('#url').val());
   Keep.campaignSource($('#source').val());
   Keep.campaignMedium($('#medium').val());
@@ -206,7 +204,10 @@ function storeKeepValues() {
   Keep.futureDate($('#future-date').hasClass('active'));
 }
 
+var loaded = false;
+
 function restoreKeepValues() {
+
   $('#url').val(Keep.buyUrl());
   $('#source').val(Keep.campaignSource());
   $('#medium').val(Keep.campaignMedium());
