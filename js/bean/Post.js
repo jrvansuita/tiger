@@ -71,12 +71,9 @@ module.exports = class Post {
     this.makeCheckIn = makeCheckIn;
   }
 
-  getDefaultFinalCaption() {
-
-  }
-
   assertFacebook() {
-    var message = this.getItems()[0].caption;
+    var message = this.getItems()[0].getBuildedCaption(true);
+
     this.message = message ? message : this.getItems()[0].getBuildedCaption();
 
     if (this.makeCheckIn) {

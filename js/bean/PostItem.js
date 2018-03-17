@@ -99,10 +99,10 @@ module.exports = class PostItem {
     return this.getPatternBuyLink().replace('{.link}', this.getCampaignBuyLink());
   }
 
-  getBuildedCaption() {
+  getBuildedCaption(noHashTags) {
     return this.getBuildedDescription() + '\n\n' +
       this.getBuildedBuyLink() + '\n\n' +
-      this.getHashTags();
+      (noHashTags ? '' : this.getHashTags());
   }
 
   getBuyLink() {

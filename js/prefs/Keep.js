@@ -40,13 +40,13 @@ module.exports = {
     return _keepArr('selected-products', values);
   },
 
-  shortBuyUrl: function(value) {
-    return _keepStr('short-buy-url', value, 'true') == 'true';
-  },
+  // shortBuyUrl: function(value) {
+  //   return _keepStr('short-buy-url', value, 'true') == 'true';
+  // },
 
-  magicLink: function(value) {
-    return _keepStr('magic-link', value, 'true') == 'true';
-  },
+  // magicLink: function(value) {
+  //   return _keepStr('magic-link', value, 'true') == 'true';
+  // },
 
   futureDate: function(value) {
     return _keepStr('future-date', value) == 'true';
@@ -68,9 +68,9 @@ module.exports = {
     return _keepStr('campaign-name', value);
   },
 
-  checkIn: function(value) {
-    return _keepStr('check-in', value, 'true') == 'true';
-  },
+  // checkIn: function(value) {
+  //   return _keepStr('check-in', value, 'true') == 'true';
+  // },
 
   lastExchangeFacebookToken(time) {
     return parseInt(_keepStr('last-fb-exchange-token', time, 0));

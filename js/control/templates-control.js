@@ -43,7 +43,10 @@ var ListBuilder = class ListBuilder {
 
     TemplatesMDb.find({
       type: this.name
-    }, function(err, docs) {
+    }).sort({
+      field: 'asc',
+      _id: 1
+    }).exec(function(err, docs) {
       _self.renderItens(docs);
       _self.hideListLoading();
     });
@@ -52,15 +55,37 @@ var ListBuilder = class ListBuilder {
       _self: _self
     }, function() {
 
-      TemplatesMDb({
+      var object = {
         item: _self.input.val(),
         type: _self.name
-      }).save(function(err) {
-        if (err) console.log(err);
-      });
+      };
 
-      _self.addItemList(_self.input.val());
       Emoji.clear(_self.input);
+
+      var id = _self.save.attr('editing');
+
+
+
+      if (id != 0 && id != undefined) {
+
+        _self.applyEditing();
+        $("div[id='" + id + "']").find(".description-body").text(object.item);
+
+        TemplatesMDb.update({
+            _id: id
+          },
+          object,
+          function(err, doc) {
+            if (err)
+              console.log(err);
+          });
+      } else {
+        _self.applyEditing();
+
+        TemplatesMDb(object).save(function(err, doc) {
+          _self.addItemList(doc.id, doc.item);
+        });
+      }
     });
   }
 
@@ -75,37 +100,48 @@ var ListBuilder = class ListBuilder {
 
   renderItens(docs) {
     for (var i = 0; i < docs.length; i++) {
-      this.addItemList(docs[i].item);
+      this.addItemList(docs[i].id, docs[i].item);
     }
   }
 
-  addItemList(value) {
+  addItemList(id, value) {
     var _self = this;
 
     var p = $('<p>').addClass('description-body').append(value);
     var content = $('<div>').addClass('content').append(p);
-    var del = $('<i>').addClass('remove grey icon pull-right del').click(function() {
 
-      TemplatesMDb.find({
-        item: value,
-        type: _self.name
-      }).remove(function() {});
+    var del = $('<i>').addClass('remove grey icon pull-right del')
+      .click(function() {
+        TemplatesMDb.find({
+          _id: id
+        }).remove(function() {});
 
-      $(this).parent().fadeOut(200, function() {
-        $(this).remove();
+        $(this).parent().fadeOut(200, function() {
+          $(this).remove();
+        });
       });
-    });
 
     var item = $('<div>').addClass('item').append(content, del)
       .hide();
 
+    item.attr('id', id);
+
     content.click(function() {
-      Emoji.text(_self.input, value);
+      Emoji.text(_self.input, $(this).text());
+      _self.applyEditing(id);
+
+      $(this).parent().fadeOut(10).fadeIn().addClass('isEditing');
       return true;
     });
 
     this.list.prepend(item);
     item.fadeIn('slow');
+  }
+
+  applyEditing(id) {
+    this.save.attr('editing', id ? id : 0);
+
+    $('.isEditing').removeClass('isEditing');
   }
 
   hideListLoading() {
@@ -127,8 +163,7 @@ var ListBuilder = class ListBuilder {
       }
     }
   }
-
-}
+};
 
 
 

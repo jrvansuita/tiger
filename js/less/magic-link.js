@@ -77,6 +77,8 @@ function categoryFilter(categories) {
       cat.push('sapatilha');
     } else if (is(item, 'tenis')) {
       cat.push('tenis');
+    } else if (is(item, 'meia')) {
+      cat.push('meia');
     } else {
       //cat.push(item);
     }

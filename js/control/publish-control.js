@@ -164,8 +164,6 @@ function applyMagicLink(callback) {
 function onDoShortLink(doShort) {
   $('#short-url').toggleClass('active', doShort);
 
-  console.log('Passou ' + doShort + ' ' + $('#short-url').hasClass('active'));
-
   if ($('#url').val()) {
     adapter.handleShortLink(doShort);
   }
@@ -198,9 +196,9 @@ function storeKeepValues() {
   Keep.campaignSource($('#source').val());
   Keep.campaignMedium($('#medium').val());
   Keep.campaignName($('#name').val());
-  Keep.shortBuyUrl($('#short-url').hasClass('active'));
-  Keep.checkIn($('#check-in').hasClass('active'));
-  Keep.magicLink($('#lab-link').hasClass('active'));
+  //Keep.shortBuyUrl($('#short-url').hasClass('active'));
+  //Keep.checkIn($('#check-in').hasClass('active'));
+  //Keep.magicLink($('#lab-link').hasClass('active'));
   Keep.futureDate($('#future-date').hasClass('active'));
 }
 
@@ -213,21 +211,21 @@ function restoreKeepValues() {
   $('#medium').val(Keep.campaignMedium());
   $('#name').val(Keep.campaignName());
 
-  if (Keep.magicLink()) {
-    applyMagicLink(function() {
-      if (Keep.shortBuyUrl()) {
-        onDoShortLink(true);
-      }
-    });
-  } else {
+  //if (Keep.magicLink()) {
+  applyMagicLink(function() {
+    //if (Keep.shortBuyUrl()) {
+    onDoShortLink(true);
+    //}
+  });
+  /*} else {
     if (Keep.shortBuyUrl()) {
       $('#short-url').click();
     }
-  }
+  }*/
 
-  if (Keep.checkIn()) {
-    $('#check-in').click();
-  }
+  //if (Keep.checkIn()) {
+  $('#check-in').click();
+  //}
 
   if (Keep.futureDate()) {
     $('#future-date').click();

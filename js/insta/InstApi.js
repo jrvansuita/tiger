@@ -32,8 +32,8 @@ module.exports = {
       url: url,
       success: function(data) {
         var profile = {};
-        profile.pic = data.user.profile_pic_url;
-        profile.name = data.user.full_name;
+        profile.pic = data.graphql.user.profile_pic_url;
+        profile.name = data.graphql.user.full_name;
 
         if (callback) {
           callback(profile);
