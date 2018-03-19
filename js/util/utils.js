@@ -90,7 +90,7 @@ module.exports = {
   },
 
   calcGalleryImageSize(maxWidth, itemsLength) {
-    var overplus = 4;
+    var overplus = 5;
     var width = maxWidth - overplus;
 
     if (itemsLength <= 4) {

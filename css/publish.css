@@ -11,9 +11,8 @@ li {
   margin-bottom: 5px;
 }
 
-.img-item {
-  width: 100px;
-  height: 100px;
+.post-item {
+  display: inline-grid;
   border-width: 1px;
   border-style: solid;
   border-color: #dddfe2;
@@ -150,4 +149,14 @@ b {
 
 #post-pane {
   min-height: 100px;
+}
+
+.del-post-item {
+  position: absolute;
+  color: #dddfe2;
+  cursor: pointer;
+}
+
+.del-post-item:hover {
+  color: #a9aaab;
 }

@@ -101,16 +101,34 @@ module.exports = {
   },
 
   buildGallery: function() {
-    var slider = $('#slider');
+    var slider = $('#slider').empty();
 
     var width = Util.calcGalleryImageSize(slider.width(), getItems().length);
 
-    getItems().forEach(function(item) {
-      slider.append($('<img>').attr('data-id', item.product.sku)
-        .addClass('img-item')
+    var _self = this;
+    getItems().forEach(function(item, index) {
+
+      var div = $('<div>');
+
+      var img = $('<img>')
         .attr('src', item.product.imageUrl)
         .width(width)
-        .height(width));
+        .height(width);
+
+      var del = $('<i>').addClass('remove icon del-post-item ').click((e) => {
+        //Remove from selected products
+        Keep.selectedProducts(Keep.selectedProducts().filter(a => a !== item.product.sku));
+        //Remove items List
+        getItems().splice(index, 1);
+        //Remove the item from gallery
+        _self.buildGallery();
+      });
+
+      div.attr('data-id', item.product.sku)
+        .addClass('post-item')
+        .append(img, del);
+
+      slider.append(div);
     });
 
     Sortable.create(slider[0], {
