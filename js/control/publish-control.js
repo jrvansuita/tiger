@@ -105,12 +105,6 @@ function buildTriggers() {
     onDoShortLink(!$(this).hasClass('active'));
   });
 
-  $('.img-item').click(function() {
-    if (!$(this).hasClass('selected')) {
-      adapter.select($(this).attr('data-id'));
-    }
-  });
-
   $('#same-link, #same-description').click(function() {
     adapter.toggleSame($(this).attr('same'));
     $(this).toggleClass('active');

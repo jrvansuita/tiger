@@ -94,7 +94,7 @@ module.exports = {
     });
 
     $('.selected').removeClass('selected');
-    $("img[data-id='" + sku + "'] ").addClass('selected');
+    $("div[data-id='" + sku + "'] ").addClass('selected');
 
     updateViews();
     updatePost();
@@ -127,6 +127,12 @@ module.exports = {
       div.attr('data-id', item.product.sku)
         .addClass('post-item')
         .append(img, del);
+
+      div.click((e) => {
+        if (!div.hasClass('selected')) {
+          _self.select(div.attr('data-id'));
+        }
+      });
 
       slider.append(div);
     });
