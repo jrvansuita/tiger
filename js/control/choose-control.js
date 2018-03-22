@@ -55,6 +55,7 @@ $(document).ready(function() {
 
   function executeSearch() {
     $('#search-button').addClass('loading');
+
     listAdapter.execute($('#search').val(), function() {
       $('#search-button').removeClass('loading');
     });

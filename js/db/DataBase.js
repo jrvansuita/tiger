@@ -25,7 +25,7 @@ const productsDb = createProductsDb();
 const templatesDb = createTemplatesDb();
 
 function createProductsDb() {
-  return getCollection('/db/products.data', {
+  return getCollection('/db/products.data', [{
     fieldName: 'sku',
     unique: true
   }, {
@@ -34,7 +34,7 @@ function createProductsDb() {
   }, {
     fieldName: 'selected',
     unique: false
-  });
+  }]);
 }
 
 function createPostsDb() {

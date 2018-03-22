@@ -35,6 +35,8 @@ module.exports = {
   execute: function(searchText, onFinished) {
     productsProvider.setSearchCallBack(function(data) {
       onFinishedSearch(data);
+      console.log('p');
+      loadTotal(data);
       onFinished();
     });
 
@@ -287,4 +289,16 @@ function zoomImg(element, src) {
 function showSelectionCount() {
   $('#selected-count').toggle($('.checked').length > 0);
   $('#selected-count').text($('.checked').length);
+}
+
+function loadTotal(list) {
+  var t = 0;
+  var q = 0;
+
+  list.forEach(function(item) {
+    q++;
+    t += item.quantity;
+  });
+
+  msg.fixed('  ' + t + ' products  ' + q + ' skus');
 }

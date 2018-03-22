@@ -133,6 +133,12 @@ a {
 #message-holder {
   margin-right: 5px;
   margin-top: 2px;
+  margin-left: 5px;
+}
+
+#fixed-message {
+  margin-top: 2px;
+  margin-left: 5px;
 }
 
 #hint-message {
