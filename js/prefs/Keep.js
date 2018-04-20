@@ -114,7 +114,14 @@ module.exports = {
 
   searchAttrs: function(value) {
     return _keepJson('search-attrs', value);
-  }
+  },
 
+  maxItemsFace: function(value) {
+    return _keepJson('max-items-face', value, 4);
+  },
+
+  maxItemsInsta: function(value) {
+    return _keepJson('max-items-insta', value, 10);
+  },
 
 };

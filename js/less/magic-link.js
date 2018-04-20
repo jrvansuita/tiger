@@ -65,6 +65,8 @@ function categoryFilter(categories) {
       cat.push('bermuda');
     } else if (is(item, 'blusa')) {
       cat.push('blusa');
+    } else if (is(item, 'manga longa infantil feminina')) {
+      cat.push('blusa-manga-longa');
     } else if (is(item, 'manga longa')) {
       cat.push('camiseta-manga-longa');
     } else if (is(item, 'macac')) {

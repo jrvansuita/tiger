@@ -25,6 +25,9 @@ function storeKeepValues() {
 
   Keep.instaUser($('#insta-user').val());
   Keep.instaPass($('#insta-pass').val());
+
+  Keep.maxItemsFace($('#max-face').val());
+  Keep.maxItemsInsta($('#max-insta').val());
 }
 
 function restoreKeepValues() {
@@ -38,4 +41,7 @@ function restoreKeepValues() {
 
   $('#insta-user').val(Keep.instaUser());
   $('#insta-pass').val(Keep.instaPass());
+
+  $('#max-face').val(Keep.maxItemsFace());
+  $('#max-insta').val(Keep.maxItemsInsta());
 }

@@ -22,8 +22,12 @@
     var productUrl;
     var productImgUrl;
     var discount;
-    var fontColor;
-    var fontShadowColor;
+
+    var discountfontColor;
+    var pricefontColor;
+
+    var priceShadowColor;
+    var discountShadowColor;
 
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
@@ -70,13 +74,21 @@
       currentFont = getParamByName('font');
       currentFont = currentFont ? currentFont : 'Varela Round';
 
-      //Get the font color by request query
-      fontColor = getParamByName('fontColor');
-      fontColor = fontColor ? '#' + fontColor : '';
+      //Get the font color for price by request query
+      priceFontColor = getParamByName('priceFontColor');
+      priceFontColor = priceFontColor ? '#' + priceFontColor : '';
 
-      //Get the font shaodw color by request query
-      fontShadowColor = getParamByName('fontShadowColor');
-      fontShadowColor = fontShadowColor ? '#' + fontShadowColor : '';
+      //Get the font color for discount by request query
+      discountFontColor = getParamByName('discountFontColor');
+      discountFontColor = discountFontColor ? '#' + discountFontColor : '';
+
+      //Get the font shaodw color for price by request query
+      priceShadowColor = getParamByName('priceShadowColor');
+      priceShadowColor = priceShadowColor ? '#' + priceShadowColor : '';
+
+      //Get the font shaodw color for discount by request query
+      discountShadowColor = getParamByName('discountShadowColor');
+      discountShadowColor = discountShadowColor ? '#' + discountShadowColor : '';
     }
 
     //Filling canvas with white background
@@ -97,19 +109,22 @@
     function createPriceAndInstallmentsElements() {
       var leftPriceMargin = 30;
 
+      var fontColor = getFontColor(priceFontColor);
+      var fontShadow = getFontShadowColor(priceShadowColor, fontColor);
+
       /* Placing the product Price */
       context.font = "bold 50pt " + currentFont;
-      context.fillStyle = getFontColor();
+      context.fillStyle = fontColor;
       var bottomPriceMargin = 30;
-      applyFontShadow(context);
+      applyFontShadow(context, fontShadow);
       context.fillText(price, leftPriceMargin, canvas.height - bottomPriceMargin);
 
       //Placing the product Price
       if (priceX) {
         context.font = "bold 20pt " + currentFont;
-        context.fillStyle = getFontColor();
+        context.fillStyle = fontColor;
         var bottomPriceMargin = 95;
-        applyFontShadow(context);
+        applyFontShadow(context, fontShadow);
         context.fillText(priceX, leftPriceMargin + 5, canvas.height - bottomPriceMargin);
       }
     }
@@ -153,8 +168,8 @@
 
         rightMargin += 58;
         context.font = "bold 35pt " + currentFont;
-        context.fillStyle = getFontColor();
-        applyFontShadow(context);
+        context.fillStyle = getFontColor(discountFontColor);
+        applyFontShadow(context, getFontShadowColor(discountShadowColor, getFontColor(discountFontColor)));
         context.fillText(discount, canvas.width - rightMargin, topMargin + 13);
       }
     }
@@ -171,26 +186,26 @@
       return backgroundColor;
     }
 
-    function getFontColor() {
-      if (!fontColor) {
+    function getFontColor(variable) {
+      if (!variable) {
         var c = tinycolor(getBarBackgroundColor());
-        fontColor = c.getBrightness() > 200 ? 'black' : 'white';
+        variable = c.getBrightness() > 200 ? 'black' : 'white';
       }
 
-      return fontColor;
+      return variable;
     }
 
-    function getFontShadowColor() {
-      if (!fontShadowColor) {
-        var c = tinycolor(getFontColor());
-        fontShadowColor = c.getBrightness() > 200 ? 'black' : 'white';
+    function getFontShadowColor(variable, fontColor) {
+      if (!variable) {
+        var c = tinycolor(fontColor);
+        variable = c.getBrightness() > 200 ? 'black' : 'white';
       }
 
-      return fontShadowColor;
+      return variable;
     }
 
-    function applyFontShadow(context) {
-      context.shadowColor = getFontShadowColor();
+    function applyFontShadow(context, shadowColor) {
+      context.shadowColor = shadowColor;
       context.shadowBlur = 5;
       context.shadowOffsetX = 1;
       context.shadowOffsetY = 1;
@@ -239,7 +254,7 @@
         downloadTheImage();
       };
 
-      mockupImage.src = 'https://www.boutiqueinfantil.com.br/media/wysiwyg/images/mockup_facebook.png';
+      mockupImage.src = 'https://www.boutiqueinfantil.com.br/media/wysiwyg/images/mockup.png';
     }
 
     //Create a new Thread

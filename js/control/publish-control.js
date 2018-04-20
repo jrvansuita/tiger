@@ -48,13 +48,13 @@ function buildTriggers() {
     });
 
   $('#facebook-post').click(function() {
-    if (isLinkOk() && consistItemsCount(adapter.getItemsCount(), 4)) {
+    if (isLinkOk() && consistItemsCount(adapter.getItemsCount(), Keep.maxItemsFace())) {
       adapter.facePost();
     }
   });
 
   $('#instagram-post').click(function() {
-    if (isLinkOk() && consistItemsCount(adapter.getItemsCount(), 10)) {
+    if (isLinkOk() && consistItemsCount(adapter.getItemsCount(), Keep.maxItemsInsta())) {
       if ($('#schedule-val').val() !== '') {
         $('#schedule-warn').text(cnt.cant_schedule_on_instagram).fadeIn();
       } else {
