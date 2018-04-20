@@ -34,6 +34,9 @@
     var mockupImage = new Image();
     var productImage = new Image();
 
+    var outputWidth;
+    var outputHeight;
+
     //https://fonts.google.com/
     //'Droid Sans', 'Droid Serif', 'Open Sans', 'Lato'
     var currentFont; // = 'Varela Round';
@@ -89,12 +92,16 @@
       //Get the font shaodw color for discount by request query
       discountShadowColor = getParamByName('discountShadowColor');
       discountShadowColor = discountShadowColor ? '#' + discountShadowColor : '';
+
+      //Define the output image size
+      outputWidth = getParamByName('outputWidth') || 1080;
+      outputHeight = getParamByName('outputHeight') || 1920;
     }
 
     //Filling canvas with white background
-    function fillCanvasWhiteBackground() {
-      context.fillStyle = 'white';
-      context.fillRect(0, 0, canvas.width, canvas.height);
+    function fillCanvasWhiteBackground(pContext, pCanvas) {
+      pContext.fillStyle = 'white';
+      pContext.fillRect(0, 0, pCanvas.width, pCanvas.height);
     }
 
     //Centering the product image at the mockup
@@ -211,20 +218,41 @@
       context.shadowOffsetY = 1;
     }
 
+    function resizedCanvas() {
+
+      if (outputWidth && outputHeight) {
+        var resizedCanvas = document.createElement("canvas");
+        var resizedContext = resizedCanvas.getContext("2d");
+
+        resizedCanvas.width = outputWidth;
+        resizedCanvas.height = outputHeight;
+
+        fillCanvasWhiteBackground(resizedContext, resizedCanvas);
+
+        var maxSide = outputWidth > outputHeight ? outputWidth : outputHeight;
+
+        resizedContext.drawImage(canvas, 0, (outputHeight / 2) - (maxSide / 2), maxSide, maxSide);
+        return resizedCanvas;
+      } else {
+        return canvas;
+      }
+    }
+
     //Dinamic download the jpeg
     function downloadTheImage() {
-      if (window.location.href.indexOf('file://') == -1) {
-        //Creating an image url to download
-        var imgUrl = canvas.toDataURL({
-          format: 'jpeg',
-          quality: 0.8
-        });
+      //if (window.location.href.indexOf('file://') == -1) {
 
-        var a = document.createElement('a');
-        a.setAttribute("download", "mocukedUp.jpeg");
-        a.setAttribute("href", imgUrl);
-        a.click();
-      }
+      //Creating an image url to download
+      var imgUrl = resizedCanvas().toDataURL({
+        format: 'jpeg',
+        quality: 0.8
+      });
+
+      var a = document.createElement('a');
+      a.setAttribute("download", "mocukedUp.jpeg");
+      a.setAttribute("href", imgUrl);
+      a.click();
+      //}
     }
 
 
@@ -247,7 +275,7 @@
 
       //On product image load
       productImage.onload = function() {
-        fillCanvasWhiteBackground();
+        fillCanvasWhiteBackground(context, canvas);
         centeringProductImage();
         createPriceAndInstallmentsElements();
         createDiscountLabel();
