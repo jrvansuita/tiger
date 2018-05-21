@@ -20,7 +20,8 @@ $(document).ready(function() {
   openExternalLinks();
   displayInspectElement();
 
-  refreshProductsDataBase();
+  //No auto updates...
+  //refreshProductsDataBase();
 });
 
 //Show an option to inspect the element on righ click

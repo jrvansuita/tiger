@@ -56,7 +56,7 @@ module.exports = {
     }
 
     var actualHour = actual.getHours();
-    var hours = [10, 11, 13, 19, 22];
+    var hours = [8, 14, 20];
 
     for (var i = 0; i < hours.length; i++) {
       var add = false;

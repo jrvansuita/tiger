@@ -1,4 +1,4 @@
-<html>
+<html style="background:black">
   <style>
     .section-page,
     .widget {
@@ -107,30 +107,39 @@
     //Centering the product image at the mockup
     function centeringProductImage() {
       //Define a negative top margin for product image
-      var negativeTopMargin = 80;
-      context.drawImage(productImage, canvas.width / 2 - productImage.width / 2, (canvas.height / 2 - productImage.height / 2) - negativeTopMargin);
-      context.drawImage(mockupImage, 0, 0);
+      var padding = n(100);
+
+      productImage.width = productImage.width - padding;
+      productImage.height = productImage.height - padding;
+
+      var difImg = canvas.width - productImage.width;
+      productImage.height = productImage.height + difImg;
+      context.drawImage(productImage, padding / 2, (((canvas.height / 2 - productImage.height / 2)) + (padding / 3)), canvas.width - padding, productImage.height - padding);
+
+      var difMock = canvas.width - mockupImage.width;
+      mockupImage.height = mockupImage.height + difMock;
+      context.drawImage(mockupImage, 0, canvas.height - mockupImage.height, canvas.width, mockupImage.height);
     }
 
     //Placing the product Price and Installments
     function createPriceAndInstallmentsElements() {
-      var leftPriceMargin = 30;
+      var leftPriceMargin = n(45);
 
       var fontColor = getFontColor(priceFontColor);
       var fontShadow = getFontShadowColor(priceShadowColor, fontColor);
 
       /* Placing the product Price */
-      context.font = "bold 50pt " + currentFont;
+      context.font = "bold " + n(50) + "pt " + currentFont;
       context.fillStyle = fontColor;
-      var bottomPriceMargin = 30;
+      var bottomPriceMargin = n(30);
       applyFontShadow(context, fontShadow);
       context.fillText(price, leftPriceMargin, canvas.height - bottomPriceMargin);
 
       //Placing the product Price
       if (priceX) {
-        context.font = "bold 20pt " + currentFont;
+        context.font = "bold " + n(20) + "pt " + currentFont;
         context.fillStyle = fontColor;
-        var bottomPriceMargin = 95;
+        var bottomPriceMargin = n(102);
         applyFontShadow(context, fontShadow);
         context.fillText(priceX, leftPriceMargin + 5, canvas.height - bottomPriceMargin);
       }
@@ -160,12 +169,12 @@
     function renderDiscount(discount) {
       if (discount) {
         discount = '-' + discount + '%';
-        var rightMargin = 100;
-        var topMargin = 100;
+        var rightMargin = n(100);
+        var topMargin = n(100);
 
         //Circle for the discount
         context.beginPath();
-        context.arc(canvas.width - rightMargin, topMargin, 65, 0, 2 * Math.PI, false);
+        context.arc(canvas.width - rightMargin, topMargin, n(65), 0, 2 * Math.PI, false);
         context.fillStyle = getBarBackgroundColor();
         context.shadowColor = '#999';
         context.shadowBlur = 10;
@@ -173,11 +182,11 @@
         context.shadowOffsetY = 5;
         context.fill();
 
-        rightMargin += 58;
-        context.font = "bold 35pt " + currentFont;
+        rightMargin += n(58);
+        context.font = "bold " + n(35) + "pt " + currentFont;
         context.fillStyle = getFontColor(discountFontColor);
         applyFontShadow(context, getFontShadowColor(discountShadowColor, getFontColor(discountFontColor)));
-        context.fillText(discount, canvas.width - rightMargin, topMargin + 13);
+        context.fillText(discount, canvas.width - rightMargin, topMargin + n(13));
       }
     }
 
@@ -218,41 +227,28 @@
       context.shadowOffsetY = 1;
     }
 
-    function resizedCanvas() {
-
-      if (outputWidth && outputHeight) {
-        var resizedCanvas = document.createElement("canvas");
-        var resizedContext = resizedCanvas.getContext("2d");
-
-        resizedCanvas.width = outputWidth;
-        resizedCanvas.height = outputHeight;
-
-        fillCanvasWhiteBackground(resizedContext, resizedCanvas);
-
-        var maxSide = outputWidth > outputHeight ? outputWidth : outputHeight;
-
-        resizedContext.drawImage(canvas, 0, (outputHeight / 2) - (maxSide / 2), maxSide, maxSide);
-        return resizedCanvas;
-      } else {
-        return canvas;
-      }
+    function n(v) {
+      var perc = (canvas.width) * 100 / 1000;
+      return perc * v / 100
     }
+
+
 
     //Dinamic download the jpeg
     function downloadTheImage() {
-      //if (window.location.href.indexOf('file://') == -1) {
+      if (window.location.href.indexOf('file://') == -1) {
 
-      //Creating an image url to download
-      var imgUrl = resizedCanvas().toDataURL({
-        format: 'jpeg',
-        quality: 0.8
-      });
+        //Creating an image url to download
+        var imgUrl = canvas.toDataURL({ //resizedCanvas().toDataURL({
+          format: 'jpeg',
+          quality: 0.8
+        });
 
-      var a = document.createElement('a');
-      a.setAttribute("download", "mocukedUp.jpeg");
-      a.setAttribute("href", imgUrl);
-      a.click();
-      //}
+        var a = document.createElement('a');
+        a.setAttribute("download", "mocukedUp.jpeg");
+        a.setAttribute("href", imgUrl);
+        a.click();
+      }
     }
 
 
@@ -268,8 +264,8 @@
 
       //On mockup load
       mockupImage.onload = function() {
-        canvas.width = mockupImage.width;
-        canvas.height = mockupImage.height;
+        canvas.width = outputWidth; //mockupImage.width;
+        canvas.height = outputHeight; //mockupImage.height;
         productImage.src = productImgUrl;
       };
 
@@ -301,5 +297,9 @@
       });
     }, 0);
   </script>
+
+  <body style="background:black; padding:40px;">
+
+  </body>
 
 </html>
