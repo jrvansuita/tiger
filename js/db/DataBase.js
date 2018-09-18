@@ -8,7 +8,7 @@ function getCollection(name, indexes) {
     autoload: true
   });
 
-  //console.log(path);
+  console.log(path);
 
   if (indexes)
     for (var i = 0; i < indexes.length; i++) {

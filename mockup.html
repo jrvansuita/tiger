@@ -131,7 +131,7 @@
       /* Placing the product Price */
       context.font = "bold " + n(50) + "pt " + currentFont;
       context.fillStyle = fontColor;
-      var bottomPriceMargin = n(30);
+      var bottomPriceMargin = n(45);
       applyFontShadow(context, fontShadow);
       context.fillText(price, leftPriceMargin, canvas.height - bottomPriceMargin);
 
@@ -139,7 +139,7 @@
       if (priceX) {
         context.font = "bold " + n(20) + "pt " + currentFont;
         context.fillStyle = fontColor;
-        var bottomPriceMargin = n(102);
+        var bottomPriceMargin = n(110);
         applyFontShadow(context, fontShadow);
         context.fillText(priceX, leftPriceMargin + 5, canvas.height - bottomPriceMargin);
       }

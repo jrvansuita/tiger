@@ -10,7 +10,7 @@ module.exports={
       },
       error: function(xhr, status) {
         console.log('Error: ' + xhr);
-        onError(xhr);
+        onError(xhr.toString());
       }
     });
   }

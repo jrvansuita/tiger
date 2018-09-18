@@ -3,11 +3,12 @@ const db = require(_jsdir + 'db/DataBase.js');
 const requests = require(_jsdir + 'util/requests.js');
 
 
-var xmlUrl = 'https://www.boutiqueinfantil.com.br/media/feed/googleshopping.xml';
+var xmlUrl = 'https://www.boutiqueinfantil.com.br/media/feed/feed-apps.xml';
 
 module.exports = {
   init: function() {
     //Attr used to do the dynamic search
+
 
     if (jQuery.isEmptyObject(Keep.searchAttrs())) {
       this.searchBundle = {};
@@ -54,6 +55,7 @@ module.exports = {
           getVal(it, 'color'),
           getVal(it, 'link'),
           getVal(it, 'image_link'));
+
 
         //Upserting Operation
         storage.update({
