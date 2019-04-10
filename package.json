@@ -29,7 +29,7 @@
     "semantic-ui": "^2.3.3",
     "semantic-ui-calendar": "0.0.8",
     "short-url": "0.0.1",
-    "sortablejs": "^1.7.0",
+    "sortablejs": "^1.8.4",
     "tinycolor2": "^1.4.1"
   },
   "devDependencies": {

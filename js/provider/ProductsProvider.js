@@ -42,6 +42,8 @@ module.exports = {
         var it = items[i];
 
         var title = getVal(it, 'title');
+        var brand = getBrand(title, getVal(it, 'brand'));
+
 
         var product = new Product(
           getVal(it, 'id'),
@@ -51,7 +53,7 @@ module.exports = {
           getVal(it, 'price'),
           getVal(it, 'quantity'),
           getVal(it, 'gender'),
-          getBrand(title, getVal(it, 'brand')),
+          brand,
           getVal(it, 'color'),
           getVal(it, 'link'),
           getVal(it, 'image_link'));
