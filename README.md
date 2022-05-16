@@ -1,9 +1,9 @@
 
 <img src="https://github.com/jrvansuita/tiger/blob/main/assets/icons/icon.png?raw=true" align="left" hspace="1" vspace="1">
 
-[![](https://img.shields.io/badge/Boutique%20Infantil-Legacy-green.svg?)](https://android-arsenal.com/details/1/4614)
 
-# Tiger
+
+# Tiger ![](https://img.shields.io/badge/Boutique%20Infantil-Legacy-green.svg?)
 
 
 This app was created to manage social media pages and automate post creation inside a former self company called Boutique Infantil. 
